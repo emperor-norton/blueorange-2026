@@ -92,6 +92,7 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .stat { border-top: 1px solid rgba(0,0,0,.18); padding-top: var(--s-24); color: var(--ink); display: flex; flex-direction: column; gap: var(--s-12); }
 .stat .n { font-family: var(--display); font-size: clamp(48px, 5vw, 64px); font-weight: 600; line-height: 1.1; font-variant-numeric: lining-nums proportional-nums; letter-spacing: -0.035em; }
 .stat .l { font-size: 15px; font-weight: 500; line-height: 1.4; color: var(--muted); }
+.stat .src { margin-top: auto; font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 
 /* ---------- Work band ---------- */
 .work { padding-block: var(--s-96); }
