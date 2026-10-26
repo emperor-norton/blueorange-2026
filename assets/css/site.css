@@ -94,7 +94,7 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .work > .wrap { display: flex; flex-direction: column; gap: var(--s-96); }
 .figure { margin: 0; background: var(--paper); border-radius: var(--r-lg); padding: clamp(var(--s-16), 4vw, var(--s-48)); display: flex; flex-direction: column; gap: var(--s-24); }
 .figure img { width: 100%; }
-.figure img.framed { border: 1px solid var(--rule); border-radius: var(--r-sm); }
+.figure img.framed { border: 1px solid var(--rule); border-radius: var(--r-sm); background: var(--white); }
 .figure figcaption { font-weight: 500; font-style: italic; font-size: 15px; line-height: 1.4; color: var(--muted); text-align: center; text-wrap: balance; }
 /* Multi-image rows inside a figure */
 .row { display: grid; gap: var(--s-24); align-items: start; }
