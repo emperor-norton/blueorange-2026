@@ -78,7 +78,11 @@
   var more = document.getElementById('more');
   function tilesCheck() {
     if (!tiles) return;
-    var hide = more ? more.getBoundingClientRect().top < tiles.getBoundingClientRect().height + 40 : false;
+    // Step aside only while the blue project cards pass under the tiles, then come back.
+    var grid = document.querySelector('.cards');
+    var g = grid && grid.getBoundingClientRect();
+    var tb = tiles.getBoundingClientRect().height + 16;
+    var hide = g ? (g.top < tb && g.bottom > 0) : false;
     tiles.classList.toggle('away', hide);
     tiles.classList.toggle('small', window.scrollY > 80);
   }
