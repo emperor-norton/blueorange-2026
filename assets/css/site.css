@@ -150,26 +150,25 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 /* ---------- How I work (home) ---------- */
 .principles { background: var(--paper); padding-block: var(--s-96); }
 .principles h2 { margin: 0 0 var(--s-48); font-family: var(--display); font-weight: 600; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.2; color: var(--ink); }
-.principles ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-48) var(--s-64); }
-.principle { border-top: 1px solid rgba(0,0,0,.18); padding-top: var(--s-24); display: flex; flex-direction: column; gap: var(--s-12); }
+.principles ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+/* Each principle: the line on the left, the explanation on the right, hairline between items. */
+.principle { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-12) var(--s-48); padding-block: var(--s-24) var(--s-32); border-top: 1px solid rgba(0,0,0,.18); }
+.principle:last-child { border-bottom: 1px solid rgba(0,0,0,.18); }
 .principle h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(22px, 2vw, 26px); line-height: 1.25; color: var(--ink); text-wrap: balance; }
-.principle p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--text); max-width: 46ch; }
-.principle .where { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.principle .where a { color: inherit; }
-.principle .where a:hover { color: var(--blue); }
-@media (max-width: 760px) { .principles ol { grid-template-columns: minmax(0, 1fr); gap: var(--s-32); } .principles { padding-block: var(--s-64); } }
+.principle p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--text); max-width: 60ch; }
+@media (max-width: 760px) { .principle { grid-template-columns: minmax(0, 1fr); } .principles { padding-block: var(--s-64); } }
 
 /* ---------- More work band + project cards ---------- */
 .more { background: var(--paper); padding-block: var(--s-96) 0; }
 .home .more { padding-top: 0; }
 .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-16); }
 @media (max-width: 999px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; aspect-ratio: 6 / 5; padding: var(--s-24); background: var(--blue); color: var(--white); border-radius: var(--r-lg); overflow: hidden; text-decoration: none; }
+.card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; aspect-ratio: 4 / 3; padding: var(--s-24); background: var(--blue); color: var(--white); border-radius: var(--r-lg); overflow: hidden; text-decoration: none; }
 /* Hover shade sits over the object image too, so its baked-in blue darkens with the card. */
 .card::after { content: ""; position: absolute; inset: 0; background: rgba(0, 32, 64, .12); opacity: 0; transition: opacity 250ms ease; pointer-events: none; }
 .card:hover::after, .card:focus-visible::after { opacity: 1; }
 .card.here { opacity: .6; }
-.card .obj { position: absolute; top: 0; right: 0; width: 52%; max-width: 240px; aspect-ratio: 1; height: auto; transition: transform 400ms var(--ease); }
+.card .obj { position: absolute; top: 0; right: 0; width: 46%; max-width: 210px; aspect-ratio: 1; height: auto; transition: transform 400ms var(--ease); }
 .card:hover .obj, .card:focus-visible .obj { transform: translateY(-8px); }
 .card .txt { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--s-12); }
 .card .co { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
