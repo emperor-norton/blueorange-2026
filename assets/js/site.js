@@ -107,6 +107,18 @@
     if (lenis) lenis.scrollTo(0); else window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
   });
 
+  /* ---------- Hero straddle: gray band ends at the hero's midpoint ---------- */
+  var story = document.querySelector('.case .story'), shot = story && story.querySelector('.shot');
+  if (shot) {
+    var split = function () {
+      var s = story.getBoundingClientRect(), r = shot.getBoundingClientRect();
+      story.style.setProperty('--split', Math.round(r.top - s.top + r.height * 0.5) + 'px');
+    };
+    split();
+    window.addEventListener('resize', split);
+    $$('.case .story .shot img').forEach(function (i) { if (!i.complete) i.addEventListener('load', split); });
+  }
+
   /* ---------- Reading aid ---------- */
   var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (canHover) {
