@@ -62,7 +62,7 @@ a.tile:hover { transform: translateY(-3px); }
 .eyebrow { margin: 0 0 var(--s-16); font-family: var(--mono); font-weight: 500; font-size: 12px; line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.18; letter-spacing: -0.01em; color: var(--ink); text-wrap: balance; }
 /* Headline keeps the reading column's left edge but may run wider to the right on desktop. */
-@media (min-width: 1000px) { .head h1 { margin-right: calc(-1 * min(260px, (100vw - var(--col)) / 2 - 32px)); } }
+/* Headline stays inside the reading column. */
 .pills { display: flex; flex-wrap: wrap; gap: var(--s-12); margin: 0; padding: 0; list-style: none; }
 .pills li { border: 1px solid rgba(0,0,0,.28); border-radius: 999px; padding: var(--s-8) var(--s-16); font-family: var(--mono); font-weight: 500; font-size: 12px; line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; color: var(--text); }
 
