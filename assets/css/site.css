@@ -120,7 +120,8 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
    on the same edge as the logo tile and the cards. */
 .home-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, var(--col)) minmax(0, 1fr); column-gap: var(--s-24); row-gap: var(--s-32); }
 /* The thesis is set as a statement: full width, much larger than anything else on the page. */
-.home-grid h1 { grid-column: 1 / -1; font-size: clamp(40px, 6.2vw, 80px); line-height: 1.04; letter-spacing: -0.02em; max-width: 22ch; margin-bottom: var(--s-16); }
+/* Thesis sits in the reading column, set larger than case study headlines. */
+.home-grid h1 { grid-column: 2; font-size: clamp(36px, 4.4vw, 60px); line-height: 1.08; letter-spacing: -0.015em; margin-bottom: var(--s-16); }
 .home-grid .prose { grid-column: 2; grid-row: 2; }
 .home-grid .links { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: var(--s-12); margin: 0; padding: 0; list-style: none; padding-top: 2px; }
 .home .story { padding-bottom: var(--s-96); }
@@ -128,8 +129,8 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .arrow-link { display: inline-flex; align-items: center; gap: var(--s-8); font-weight: 500; font-size: 18px; color: var(--blue); text-decoration: none; }
 .arrow-link .ic { width: 20px; height: 20px; background: var(--blue); color: #fff; display: grid; place-items: center; border-radius: 2px; transition: transform 250ms var(--ease); }
 .arrow-link:hover .ic { transform: translateX(3px); }
-@media (max-width: 900px) {
-  .home-grid { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 1120px) {
+  .home-grid { grid-template-columns: minmax(0, var(--col)); }
   .home-grid h1, .home-grid .prose { grid-column: 1; }
   .home-grid .prose { grid-row: 2; }
   .home-grid .links { grid-column: 1; grid-row: 3; flex-direction: row; gap: var(--s-24); padding: 0; }
@@ -152,11 +153,13 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .principles h2 { margin: 0 0 var(--s-48); font-family: var(--display); font-weight: 600; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.2; color: var(--ink); }
 .principles ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 /* Each principle: the line on the left, the explanation on the right, hairline between items. */
-.principle { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-12) var(--s-48); padding-block: var(--s-24) var(--s-32); border-top: 1px solid rgba(0,0,0,.18); }
+/* Same reading column as the case studies: line above, explanation below. */
+.principles .col > * { max-width: 100%; }
+.principle { display: flex; flex-direction: column; gap: var(--s-8); padding-block: var(--s-24) var(--s-32); border-top: 1px solid rgba(0,0,0,.18); }
 .principle:last-child { border-bottom: 1px solid rgba(0,0,0,.18); }
 .principle h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(22px, 2vw, 26px); line-height: 1.25; color: var(--ink); text-wrap: balance; }
-.principle p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--text); max-width: 60ch; }
-@media (max-width: 760px) { .principle { grid-template-columns: minmax(0, 1fr); } .principles { padding-block: var(--s-64); } }
+.principle p { margin: 0; font-size: 18px; line-height: 1.6; color: var(--text); max-width: 60ch; }
+@media (max-width: 760px) { .principles { padding-block: var(--s-64); } }
 
 /* ---------- More work band + project cards ---------- */
 .more { background: var(--paper); padding-block: var(--s-96) 0; }
