@@ -78,7 +78,11 @@
   var more = document.getElementById('more');
   function tilesCheck() {
     if (!tiles) return;
-    var hide = more ? more.getBoundingClientRect().top < tiles.getBoundingClientRect().height + 40 : false;
+    // Step aside only while the blue project cards pass under the tiles, then come back.
+    var grid = document.querySelector('.cards');
+    var g = grid && grid.getBoundingClientRect();
+    var tb = tiles.getBoundingClientRect().height + 16;
+    var hide = g ? (g.top < tb && g.bottom > 0) : false;
     tiles.classList.toggle('away', hide);
     tiles.classList.toggle('small', window.scrollY > 80);
   }
@@ -107,6 +111,30 @@
     if (lenis) lenis.scrollTo(0); else window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
   });
 
+  /* ---------- Hero straddle: gray band ends at the hero's midpoint ---------- */
+  var story = document.querySelector('.case .story'), shot = story && story.querySelector('.shot');
+  if (shot) {
+    var frameH = 0; // live hero: height of the scaled frame, without its controls
+    var split = function () {
+      var s = story.getBoundingClientRect(), r = shot.getBoundingClientRect();
+      story.style.setProperty('--split', Math.round(r.top - s.top + (frameH || r.height) * 0.5) + 'px');
+    };
+    split();
+    window.addEventListener('resize', split);
+    // Live hero (iframe): it reports its own height after scaling; size to it and re-split at the frame's midpoint.
+    var live = shot.querySelector('iframe.hero-live');
+    if (live) window.addEventListener('message', function (e) {
+      if (e.source !== live.contentWindow || !e.data || !e.data.sasHero) return;
+      live.style.aspectRatio = 'auto';
+      live.style.height = Math.ceil(e.data.sasHero) + 'px';
+      frameH = e.data.frame;
+      // round the embed's top corners too, for browsers that don't clip the scaled window inside it
+      live.style.borderRadius = (12 * e.data.frame / 760) + 'px ' + (12 * e.data.frame / 760) + 'px 0 0';
+      split();
+    });
+    $$('.case .story .shot img').forEach(function (i) { if (!i.complete) i.addEventListener('load', split); });
+  }
+
   /* ---------- Reading aid ---------- */
   var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (canHover) {
@@ -115,7 +143,7 @@
       if (seg) return Array.from(seg.segment(text), function (s) { return s.segment; });
       return text.match(/[^.!?]+[.!?]+[\s ]*|[^.!?]+$/g) || [text];
     };
-    $$('.prose p, .prose li').forEach(function (b) {
+    $$('.prose p, .prose li, .principle p').forEach(function (b) {
       if (b.children.length) return; // leave blocks with markup (bold leads, links) intact
       var text = b.textContent;
       b.textContent = '';

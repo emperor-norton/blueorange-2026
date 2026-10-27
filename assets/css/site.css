@@ -60,7 +60,7 @@ a.tile:hover { transform: translateY(-3px); }
 .story > .wrap { display: flex; flex-direction: column; gap: var(--s-48); }
 .head { display: flex; flex-direction: column; gap: var(--s-32); }
 .eyebrow { margin: 0 0 var(--s-16); font-family: var(--mono); font-weight: 500; font-size: 12px; line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.18; letter-spacing: -0.01em; color: var(--ink); text-wrap: balance; }
+h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3.2vw, 40px); line-height: 1.2; letter-spacing: -0.01em; color: var(--ink); text-wrap: balance; }
 /* Headline keeps the reading column's left edge but may run wider to the right on desktop. */
 /* Headline stays inside the reading column. */
 .pills { display: flex; flex-wrap: wrap; gap: var(--s-12); margin: 0; padding: 0; list-style: none; }
@@ -70,7 +70,18 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .shot img { width: 100%; }
 .shot img.framed { border: 1px solid var(--rule); border-radius: var(--r-sm); }
 .shot.bare { background: transparent; padding: 0; }
+/* Case studies: the hero straddles the edge of the gray band. site.js sets --split to the hero's midpoint. */
+.case .story { padding-bottom: var(--s-48); }
+.case .story .shot { background: transparent; padding: 0; }
+.case .story .shot img.framed { box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 16px 40px rgba(0,0,0,.07); }
 .shot.bare img { border: 0; border-radius: 0; }
+/* Composite hero: web window plus a flat phone screen, positioned in % of a fixed-ratio box. */
+.shot.combo { position: relative; } /* aspect-ratio set inline per composite */
+.shot.combo img { position: absolute; height: auto; border-radius: min(var(--r-sm), 1vw); } /* 12px on desktop, tighter as the composite shrinks */
+.case .story .shot.combo img.win { box-shadow: none; }
+.case .story .shot.combo img.ph { box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 8px 20px rgba(0,0,0,.08); }
+/* Live hero: the Sutherland component, scaled to the column inside its own frame. Height is set by site.js. */
+.hero-live { display: block; width: 100%; aspect-ratio: 1200 / 798; border: 0; background: transparent; }
 
 /* ---------- Reading text ---------- */
 .prose { display: flex; flex-direction: column; gap: var(--s-24); font-weight: 400; font-size: 18px; line-height: 1.6; color: var(--text); }
@@ -88,6 +99,7 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .stat { border-top: 1px solid rgba(0,0,0,.18); padding-top: var(--s-24); color: var(--ink); display: flex; flex-direction: column; gap: var(--s-12); }
 .stat .n { font-family: var(--display); font-size: clamp(48px, 5vw, 64px); font-weight: 600; line-height: 1.1; font-variant-numeric: lining-nums proportional-nums; letter-spacing: -0.035em; }
 .stat .l { font-size: 15px; font-weight: 500; line-height: 1.4; color: var(--muted); }
+.stat .src { margin-top: auto; font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 
 /* ---------- Work band ---------- */
 .work { padding-block: var(--s-96); }
@@ -112,33 +124,75 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .closing { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.25; color: var(--ink); text-wrap: balance; }
 
 /* ---------- Home intro ---------- */
-.intro { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: var(--s-32) var(--s-48); align-items: start; }
-.intro .links { display: flex; flex-direction: column; gap: var(--s-16); margin: 0; padding: 0; list-style: none; padding-top: 2.6em; }
-.intro .prose { max-width: var(--col); }
-.home h1 { font-size: clamp(34px, 4.6vw, 56px); max-width: 20ch; }
+/* Headline and intro share the case studies' centered reading column; the links sit in the left gutter,
+   on the same edge as the logo tile and the cards. */
+/* As the window narrows: the right gutter gives way first (column drifts right, links keep their 120px rail),
+   then the column itself narrows to 520px. Only below 768px does everything stack. */
+.home-grid { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(min(520px, 100%), var(--col)) minmax(0, 1fr); column-gap: var(--s-24); row-gap: var(--s-32); }
+/* The thesis is set as a statement: full width, much larger than anything else on the page. */
+/* Thesis sits in the reading column, set larger than case study headlines. */
+.home-grid h1 { grid-column: 2; font-size: clamp(36px, 4.4vw, 60px); line-height: 1.08; letter-spacing: -0.015em; margin-bottom: var(--s-16); }
+.home-grid .prose { grid-column: 2; grid-row: 2; }
+.home-grid .links { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: var(--s-12); margin: 0; padding: 0; list-style: none; padding-top: 2px; }
+.home .story { padding-bottom: var(--s-96); }
 .home-cards { padding-block: var(--s-96); }
 .arrow-link { display: inline-flex; align-items: center; gap: var(--s-8); font-weight: 500; font-size: 18px; color: var(--blue); text-decoration: none; }
 .arrow-link .ic { width: 20px; height: 20px; background: var(--blue); color: #fff; display: grid; place-items: center; border-radius: 2px; transition: transform 250ms var(--ease); }
 .arrow-link:hover .ic { transform: translateX(3px); }
-@media (max-width: 760px) {
-  .intro { grid-template-columns: minmax(0, 1fr); }
-  .intro .links { order: 2; flex-direction: row; gap: var(--s-24); padding-top: 0; }
+@media (max-width: 767px) {
+  .home-grid { grid-template-columns: minmax(0, var(--col)); }
+  .home-grid h1, .home-grid .prose { grid-column: 1; }
+  .home-grid .prose { grid-row: 2; }
+  .home-grid .links { grid-column: 1; grid-row: 3; flex-direction: row; gap: var(--s-24); padding: 0; }
+  .home .story { padding-bottom: var(--s-64); }
+  .home-cards { padding-top: var(--s-48); }
 }
+
+/* ---------- Case study band: each company's color, darkened, at the top and in the footer ---------- */
+/* One light source per page: a soft white glow from the logo tile (top-left of the content column), fading by mid-page. */
+:root { --glow-at: max(66px, calc(50% - 518px)) 0; }
+.case .story { background:
+  radial-gradient(ellipse 1000px 720px at var(--glow-at), rgba(255,255,255,.10), rgba(255,255,255,0) 70%),
+  linear-gradient(to bottom, var(--band, var(--paper)) var(--split, 60%), var(--white) var(--split, 60%)); }
+.home .story { background:
+  radial-gradient(ellipse 1000px 720px at var(--glow-at), rgba(255,255,255,.75), rgba(255,255,255,0) 70%),
+  var(--paper); }
+.case .story .eyebrow { color: rgba(255,255,255,.72); }
+.case .story h1 { color: #fff; }
+.case .story .pills li { border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.9); }
+.case footer { background: var(--band); }
+.case footer .wrap, .case footer .c { color: rgba(255,255,255,.75); }
+.case footer .ln { color: #fff; background-image: linear-gradient(#7cc3f2, #7cc3f2); }
+.case footer .ln:hover { color: #7cc3f2; }
+
+/* ---------- How I work (home) ---------- */
+.principles { background: var(--paper); padding-block: var(--s-96); }
+.principles h2 { margin: 0 0 var(--s-48); font-family: var(--display); font-weight: 600; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.2; color: var(--ink); }
+.principles ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+/* Each principle: the line on the left, the explanation on the right, hairline between items. */
+/* Same reading column as the case studies: line above, explanation below. */
+.principles .col > * { max-width: 100%; }
+.principle { display: flex; flex-direction: column; gap: var(--s-8); padding-block: var(--s-24) var(--s-32); border-top: 1px solid rgba(0,0,0,.18); }
+.principle:last-child { border-bottom: 1px solid rgba(0,0,0,.18); }
+.principle h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(22px, 2vw, 26px); line-height: 1.25; color: var(--ink); text-wrap: balance; }
+.principle p { margin: 0; font-size: 18px; line-height: 1.6; color: var(--text); max-width: 60ch; }
+@media (max-width: 760px) { .principles { padding-block: var(--s-64); } }
 
 /* ---------- More work band + project cards ---------- */
 .more { background: var(--paper); padding-block: var(--s-96) 0; }
 .home .more { padding-top: 0; }
-.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-16); }
-.card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; aspect-ratio: 7 / 5; padding: var(--s-32); background: var(--blue); color: var(--white); border-radius: var(--r-lg); overflow: hidden; text-decoration: none; }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-16); }
+@media (max-width: 999px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; aspect-ratio: 4 / 3; padding: var(--s-24); background: var(--blue); color: var(--white); border-radius: var(--r-lg); overflow: hidden; text-decoration: none; }
 /* Hover shade sits over the object image too, so its baked-in blue darkens with the card. */
 .card::after { content: ""; position: absolute; inset: 0; background: rgba(0, 32, 64, .12); opacity: 0; transition: opacity 250ms ease; pointer-events: none; }
 .card:hover::after, .card:focus-visible::after { opacity: 1; }
 .card.here { opacity: .6; }
-.card .obj { position: absolute; top: 0; right: 0; width: 56%; max-width: 320px; aspect-ratio: 1; height: auto; transition: transform 400ms var(--ease); }
+.card .obj { position: absolute; top: 0; right: 0; width: 46%; max-width: 210px; aspect-ratio: 1; height: auto; transition: transform 400ms var(--ease); }
 .card:hover .obj, .card:focus-visible .obj { transform: translateY(-8px); }
 .card .txt { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--s-12); }
 .card .co { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
-.card .t { min-height: 2.4em; font-family: var(--display); font-weight: 600; font-size: clamp(22px, 2.2vw, 30px); line-height: 1.2; letter-spacing: -0.005em; max-width: 461px; text-wrap: balance; }
+.card .t { min-height: 2.4em; font-family: var(--display); font-weight: 600; font-size: clamp(20px, 1.9vw, 26px); line-height: 1.2; letter-spacing: -0.005em; max-width: 461px; text-wrap: balance; }
 
 footer { margin-top: var(--s-96); background: var(--footer); }
 footer .wrap { min-height: 80px; display: flex; align-items: center; gap: var(--s-32); font-weight: 500; font-size: 15px; }
