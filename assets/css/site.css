@@ -149,13 +149,13 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 }
 
 /* ---------- Case study band: each company's color, darkened, at the top and in the footer ---------- */
-/* One light source per page: a soft glow from the logo tile (top-left of the content column), fading by mid-page. */
+/* One light source per page: a soft white glow from the logo tile (top-left of the content column), fading by mid-page. */
 :root { --glow-at: max(66px, calc(50% - 518px)) 0; }
 .case .story { background:
   radial-gradient(ellipse 1000px 720px at var(--glow-at), rgba(255,255,255,.10), rgba(255,255,255,0) 70%),
   linear-gradient(to bottom, var(--band, var(--paper)) var(--split, 60%), var(--white) var(--split, 60%)); }
 .home .story { background:
-  radial-gradient(ellipse 1000px 720px at var(--glow-at), rgba(35,141,215,.09), rgba(35,141,215,0) 70%),
+  radial-gradient(ellipse 1000px 720px at var(--glow-at), rgba(255,255,255,.75), rgba(255,255,255,0) 70%),
   var(--paper); }
 .case .story .eyebrow { color: rgba(255,255,255,.72); }
 .case .story h1 { color: #fff; }
