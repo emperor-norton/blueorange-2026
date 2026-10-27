@@ -22,7 +22,9 @@ svg.i{width:1em;height:1em;flex:none;vertical-align:middle}
 
 .stage{max-width:none;margin:0;padding:0}
 .scaler{width:100%;position:relative}
-.frame{width:1200px;height:760px;transform-origin:top left;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px #e1e0e0;display:flex;flex-direction:column;font-size:13px}
+/* border drawn on the unscaled box so it stays 1px and inside the iframe on every side */
+.scaler::after{content:"";position:absolute;inset:0;border:1px solid #e1e0e0;border-radius:var(--r,12px);pointer-events:none;z-index:5}
+.frame{width:1200px;height:760px;transform-origin:top left;background:#fff;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;font-size:13px}
 
 .chrome{height:28px;background:#e3e6e9;display:flex;align-items:center;padding:0 12px;gap:7px;flex:none}
 .chrome i{width:10px;height:10px;border-radius:50%;background:#c3c8cd}
@@ -591,6 +593,7 @@ mark{background:transparent;transition:background-color .5s ease}mark.on{backgro
     var s=Math.min(1,scaler.clientWidth/1200);
     frame.style.transform='scale('+s+')';
     scaler.style.height=(760*s)+'px';
+    scaler.style.setProperty('--r',(12*s)+'px');
     if(window.parent!==window) parent.postMessage({sasHero:document.querySelector('.stage').offsetHeight,frame:760*s},'*');
   }
   window.addEventListener('resize',fit); fit();
