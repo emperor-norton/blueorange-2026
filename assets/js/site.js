@@ -114,12 +114,22 @@
   /* ---------- Hero straddle: gray band ends at the hero's midpoint ---------- */
   var story = document.querySelector('.case .story'), shot = story && story.querySelector('.shot');
   if (shot) {
+    var frameH = 0; // live hero: height of the scaled frame, without its controls
     var split = function () {
       var s = story.getBoundingClientRect(), r = shot.getBoundingClientRect();
-      story.style.setProperty('--split', Math.round(r.top - s.top + r.height * 0.5) + 'px');
+      story.style.setProperty('--split', Math.round(r.top - s.top + (frameH || r.height) * 0.5) + 'px');
     };
     split();
     window.addEventListener('resize', split);
+    // Live hero (iframe): it reports its own height after scaling; size to it and re-split at the frame's midpoint.
+    var live = shot.querySelector('iframe.hero-live');
+    if (live) window.addEventListener('message', function (e) {
+      if (e.source !== live.contentWindow || !e.data || !e.data.sasHero) return;
+      live.style.aspectRatio = 'auto';
+      live.style.height = Math.ceil(e.data.sasHero) + 'px';
+      frameH = e.data.frame;
+      split();
+    });
     $$('.case .story .shot img').forEach(function (i) { if (!i.complete) i.addEventListener('load', split); });
   }
 

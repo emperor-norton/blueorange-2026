@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent Success, in the agent desktop</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2f3941; --muted:#68737d; --line:#d8dcde; --soft:#f3f4f6; --blue:#1f73b7;
+  --rail:#03363d; --green:#1f9d55; --red:#cc3340; --amber:#b25e09;
+  --pill-blue:#2f78bf;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Inter",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden;font-family:var(--font);color:var(--ink)}
+[hidden]{display:none!important}
+svg.i{width:1em;height:1em;flex:none;vertical-align:middle}
+
+
+.stage{max-width:none;margin:0;padding:0}
+.scaler{width:100%;position:relative}
+.frame{width:1200px;height:760px;transform-origin:top left;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px #e1e0e0;display:flex;flex-direction:column;font-size:13px}
+
+.chrome{height:28px;background:#e3e6e9;display:flex;align-items:center;padding:0 12px;gap:7px;flex:none}
+.chrome i{width:10px;height:10px;border-radius:50%;background:#c3c8cd}
+.chrome .url{margin:0 auto;background:#f3f4f6;border-radius:6px;font-size:11px;color:var(--muted);padding:3px 40px}
+
+.app{flex:1;display:flex;min-height:0}
+.rail{width:44px;background:var(--rail);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:22px;color:#a3b6b9;font-size:18px;flex:none}
+.rail .logo{width:22px;height:22px;border-radius:6px;background:#78a300;color:#fff;display:grid;place-items:center;font-size:13px;margin-bottom:6px}
+.rail .sp{flex:1}
+.rail svg:nth-of-type(2){color:#fff}
+
+.desk{flex:1;display:flex;flex-direction:column;min-width:0;background:#fff}
+.tabs{height:44px;display:flex;align-items:stretch;border-bottom:1px solid var(--line);background:#fff;flex:none}
+.tab{display:flex;align-items:center;gap:8px;padding:0 10px;border-right:1px solid var(--line);min-width:0;flex:0 1 160px;color:var(--ink)}
+.tab.tcall{background:#fff}
+.tab .ph{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:16px;background:#e3e7ea;color:#49545c;flex:none;position:relative}
+.tab .ph.live{background:#d7ebe0;color:#2b6f4a}
+.tab .ph.live::after{content:"";position:absolute;right:-1px;bottom:-1px;width:8px;height:8px;border-radius:50%;background:var(--green);border:1.5px solid #fff}
+.tab .tt{min-width:0;flex:1}
+.tab .t1{font-weight:600;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab .t2{color:var(--muted);font-size:11.5px}
+.tab .cx{font-size:10px;color:#49545c;flex:none}
+.tabs .add{display:flex;align-items:center;gap:5px;padding:0 10px;font-weight:600;font-size:12.5px;color:#49545c}
+.tabs .sq{display:grid;place-items:center;width:30px;color:#68737d;font-size:14px}
+.tabs .sp{flex:1}
+.tabs .cv{display:flex;align-items:center;background:#e9ebed;border-radius:4px;padding:0 10px;height:26px;align-self:center;font-size:12px;gap:7px;margin-right:6px}
+.tabs .cv b{background:#c2c8cc;border-radius:9px;font-size:10.5px;padding:0 5px;font-weight:600}
+.tabs .st2{display:grid;place-items:center;width:26px;color:#1f9d55;font-size:17px;align-self:center}
+.tabs .avt{width:30px;height:30px;border-radius:50%;background:#b45f66;color:#fff;display:grid;place-items:center;font-size:16px;align-self:center;margin:0 8px 0 4px}
+.crumb{height:34px;display:flex;align-items:center;gap:0;padding:0 12px;border-bottom:1px solid var(--line);background:#f8f9f9;flex:none;font-size:12px}
+.crumb span{border:1px solid #c2c8cc;border-right:none;padding:5px 10px;background:#fff;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.crumb span:first-child{border-radius:4px 0 0 4px}
+.crumb span:last-child{border-right:1px solid #c2c8cc;border-radius:0 4px 4px 0}
+.status{background:#d93f4c;color:#fff;font-size:10.5px;font-weight:700;border-radius:3px;padding:1px 5px}
+.status.solved{background:#68737d}
+
+.cols{flex:1;display:flex;min-height:0}
+.fields{width:208px;border-right:1px solid var(--line);padding:14px 14px 0;overflow:hidden;background:#fff;flex:none}
+.fields label{display:block;font-weight:600;font-size:12px;margin-bottom:4px}
+.fld{margin-bottom:12px}
+.sel{height:32px;border:1px solid #c2c8cc;border-radius:4px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;font-size:12px;gap:6px;background:#fff}
+.sel .ic{color:#68737d;margin-right:4px;font-size:15px}
+.sel .l{display:flex;align-items:center;min-width:0;white-space:nowrap;overflow:hidden}
+.sel .cv{color:#49545c;font-size:16px}
+.tagbox{border:1px solid #c2c8cc;border-radius:4px;padding:5px;display:flex;flex-wrap:wrap;gap:5px;min-height:32px}
+.tg{background:#e9ebed;border-radius:3px;padding:2px 7px;font-size:12px;display:flex;gap:6px;align-items:center}
+.tg .x{color:var(--muted);font-size:10px}
+
+.call{flex:1;display:flex;flex-direction:column;min-width:0}
+.chead{padding:10px 16px 9px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;flex:none}
+.chead b{font-size:13px}
+.chead .st{font-size:11.5px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:5px}
+.chead .st::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green)}
+.chead.ended .st::before{background:#9aa3ab}
+.chead .ico{display:flex;gap:13px;color:var(--muted);font-size:15px;padding-top:2px}
+
+.msgs{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:10px 16px 6px;gap:11px}
+.m{display:flex;gap:10px}
+.av{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:16px}
+.av.c{background:#e4e7ea;color:#9aa3ab}
+.av.a{background:#b45f66;color:#fff}
+.m .h{font-weight:600;font-size:12.5px}
+.m .h span{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:6px}
+.m .tx{font-size:13px;line-height:1.4;margin-top:1px}
+.m .tx.ev{color:var(--muted)}
+.sysmsg{font-size:12px;color:var(--muted);text-align:center;padding:2px 0}
+mark{background:#fde9a4;color:inherit;border-radius:3px;padding:0 2px}
+
+.note{background:#fdf1e4;height:96px;flex:none;padding:10px 16px;display:flex;flex-direction:column;justify-content:space-between;color:var(--muted)}
+.note .nh{font-size:12.5px;display:flex;align-items:center;gap:7px;color:var(--ink)}
+.note .tb{display:flex;gap:14px;font-size:16px;align-items:center}
+.note .tb b{font-size:13px;font-weight:700}
+
+.bar{height:56px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex:none;background:#fff}
+.macro{width:300px;height:34px;border:1px solid #c2c8cc;border-radius:4px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:12.5px;gap:8px}
+.macro .l{display:flex;gap:8px;align-items:center}
+.stay{font-weight:600;color:#49545c;font-size:12.5px;margin-left:auto;margin-right:16px}
+.submit{height:34px;background:#2f3941;color:#fff;border-radius:4px;display:flex;align-items:center;font-size:12.5px;font-weight:600}
+.submit span{padding:0 14px}
+.submit i{border-left:1px solid #566069;height:100%;display:grid;place-items:center;padding:0 10px;font-style:normal}
+
+/* Agent Success panel: 480px = 2/5 of 1200 */
+.as{width:480px;flex:none;background:#fff;border-left:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
+.ash{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex:none}
+.ash b{font-size:16px;font-weight:600}
+.ash .ico{display:flex;gap:16px;font-size:16px;color:#49545c}
+.body{flex:1;min-height:0;background:#eef1f8;margin:0 6px 6px;border-radius:15px;padding:8px;display:flex;flex-direction:column;gap:9px;overflow-y:auto;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+.asnav{display:flex;align-items:center;gap:10px;padding:0 6px;height:34px;flex:none;color:#49545c;font-size:16px}
+.asnav .sel18{background:#fff;border-radius:999px;display:flex;align-items:center;gap:7px;padding:5px 12px;font-size:13px;color:var(--ink);font-weight:500}
+.asnav .sp{flex:1}
+.search{background:#fff;border-radius:999px;height:34px;display:flex;align-items:center;gap:9px;padding:0 14px;color:var(--muted);font-size:13px;flex:none}
+
+.card{background:#fff;border:0;border-radius:11px;padding:13px;flex:none}
+.ch{display:flex;align-items:center;gap:9px;font-weight:600;font-size:11.5px;min-height:20px}
+.ch .t{flex:1;min-width:0}
+.dot{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px;flex:none}
+.dot.g{background:#1f9d55}.dot.k{background:#3d4a54}.dot.b{background:#1a8cf0}.dot.mg{background:#e0245e}.dot.a{background:#e8890c}.dot.p{background:#6c47d9}.dot.r{background:#1a8cf0}
+.ctr{display:flex;align-items:center;gap:6px;font-weight:400;font-size:10px;color:var(--ink)}
+.ctr .i{font-size:10px;color:#000}
+
+.chips{display:flex;gap:6px;margin:10px 0 10px}
+.chip{font-size:10px;font-weight:400;border-radius:999px;padding:3px 8px;line-height:1.3}
+.chip.red{background:#fdcaca;color:#8b1f2a}
+.chip.amber{background:#fde9c2;color:#7a4a05}
+
+.steps{list-style:none;counter-reset:s;margin:0 0 9px;display:flex;flex-direction:column;gap:4px}
+.steps li{counter-increment:s;display:flex;gap:6px;font-size:12px;line-height:1.35}
+.steps li::before{content:counter(s)".";color:var(--muted);width:12px;flex:none}
+.say{border:1px solid #c4c7ca;border-radius:2px;padding:7px 7px;font-size:14.4px;line-height:1.55;margin-bottom:9px;font-weight:400}
+.sig{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:9px}
+.src{font-size:11.5px;line-height:1.35}
+.src a{color:var(--blue);font-weight:600;text-decoration:none;display:block;font-size:12px}
+.src span{color:var(--muted);font-size:11px}
+
+.ci .grid{display:grid;grid-template-columns:1fr 1fr;column-gap:14px;margin-top:12px}
+.ci .c{padding:9px 0 9px;border-bottom:1px solid #c4c8cc}
+.ci .c small{display:block;color:#49545c;font-size:11.5px;margin-bottom:6px;line-height:1.2}
+.ci .c b{font-size:13.6px;font-weight:600;line-height:1.2;display:block}
+.ci .c b.reg{font-weight:400}
+.pill{display:inline-block;background:#2f9e44;color:#fff;font-size:10.4px;font-weight:400;border-radius:999px;padding:2px 8px;line-height:1.3}
+.ci .full{padding-top:11px}
+.ci .full small{color:#49545c;font-size:11.5px;display:block;margin-bottom:3px;line-height:1.2}
+.ci .full div{font-size:13.6px;line-height:1.6;color:var(--ink)}
+.ci .full div b{color:var(--ink);font-weight:600;margin-left:2px}
+
+.sum .acw{font-weight:400;font-size:10px;color:var(--muted)}
+.sum .lbl{font-size:12.8px;font-weight:600;color:var(--ink);margin:12px 0 4px}
+.sum p{font-size:12.4px;line-height:1.4}
+.sum .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:11px;padding-top:10px;border-top:1px solid #c9ced2}
+.sum .grid small{display:block;color:#49545c;font-size:11px;margin-bottom:2px}
+.sum .grid b{font-size:12.4px;font-weight:600}
+.sum .acts{display:flex;gap:16px;margin-top:7px;padding-left:5px;font-size:16px;color:#49545c}
+.sum.compact p, .sum.compact .lbl{display:none}
+.sum.compact .grid{margin-top:9px;padding-top:9px}
+
+.fb{border:0;border-radius:11px;padding:13px;background:#fff;flex:none}
+.fb .ch{padding:0}
+.fb .gbox{background:#eefcd8;border:1px solid #cfdcc0;border-radius:5px;padding:8px 11px 9px;margin-top:8px}
+.fb .gbox h4{font-size:16px;font-weight:400;margin-bottom:6px;line-height:1.15}
+.fb .gbox p{font-size:11.2px;line-height:1.25}
+.fb .coach{border:1px solid #d3d7da;border-radius:5px;padding:9px 11px 7px;margin-top:8px}
+.fb .coach h4{font-size:13.5px;font-weight:400;margin-bottom:9px;line-height:1.2}
+.fb .coach h5{font-size:11px;font-weight:700;margin-top:8px;line-height:1.2}
+.fb .coach h5:first-of-type{margin-top:0}
+.fb .coach p{font-size:11px;line-height:1.25}
+.fb .thumbs{display:flex;gap:14px;font-size:16px;margin-top:8px;color:#49545c;padding-left:10px}
+
+.cap{font-size:12px;color:var(--muted)}
+
+/* animation */
+[hidden]{display:none!important}
+.m,.sysmsg{flex:none;max-height:0;opacity:0;overflow:hidden;margin-top:-11px;transition:max-height .35s ease,opacity .3s ease,margin-top .35s ease}
+.m.show,.sysmsg.show{max-height:140px;opacity:1;margin-top:0}
+.w{opacity:0;transition:opacity .12s linear}.w.on{opacity:1}
+mark{background:transparent;transition:background-color .5s ease}mark.on{background:#fde9a4}
+.ev .w,.ev{opacity:1}
+.fv{opacity:0;transition:opacity .45s ease}.fv.on{opacity:1}
+.newtag{max-width:0;opacity:0;padding-left:0;padding-right:0;overflow:hidden;white-space:nowrap;border:0;transition:max-width .4s ease,opacity .4s ease,padding .4s ease}
+.newtag.on{max-width:150px;opacity:1;padding-left:7px;padding-right:7px}
+.car{position:relative;height:0;margin-top:-9px;flex:none;transition:height .5s ease,margin-top .5s ease}
+.car.open{margin-top:0}
+.cc{position:absolute;left:0;right:0;top:0;opacity:0;pointer-events:none;transition:opacity .22s ease}
+.cc.act{opacity:1;pointer-events:auto;transition:opacity .3s ease .2s}
+.rv{display:grid;grid-template-rows:0fr;opacity:0;margin-top:-9px;flex:none;transition:grid-template-rows .55s ease,opacity .45s ease,margin-top .55s ease}
+.rv.on{grid-template-rows:1fr;opacity:1;margin-top:0}
+.rvi{min-height:0;overflow:hidden}
+.fade{opacity:0!important;transition:opacity .3s ease!important}
+.notrans,.notrans *{transition:none!important}
+.foot{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:12px}
+.foot .cap{margin:0;text-align:left}
+.ctl{display:flex;gap:8px}
+.ctl button{font-family:"IBM Plex Mono",ui-monospace,monospace;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:#fff;border:1px solid #d3d8db;border-radius:999px;padding:5px 12px;display:flex;align-items:center;gap:6px;cursor:pointer}
+.ctl button:hover{color:var(--ink);border-color:#9aa3ab}
+.ctl button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.m,.sysmsg,.w,mark,.fv,.newtag,.car,.cc,.rv{transition:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="phone" viewBox="0 0 16 16"><path fill="currentColor" d="M10 10.586l1.293-1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-1.232 1.232a3.5 3.5 0 01-4.95 0L1.061 6.475a3.5 3.5 0 010-4.95L2.293.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414L5.414 6 10 10.586z"/></symbol>
+<symbol id="home" viewBox="0 0 16 16"><path fill="currentColor" d="M13 16h-2.5a.5.5 0 01-.5-.5v-5a.501.501 0 00-.5-.5h-3a.5.5 0 00-.5.5v5a.5.5 0 01-.5.5H3a1 1 0 01-1-1V9h-.953a1.042 1.042 0 01-.972-.63.957.957 0 01.213-1.058L7.293.3a1.002 1.002 0 011.414 0l7.004 7.01a.958.958 0 01.214 1.06 1.042 1.042 0 01-.972.63H14v6a1 1 0 01-1 1z"/></symbol>
+<symbol id="mail" viewBox="0 0 16 16"><path fill="currentColor" d="M15 2H1c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h14c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zM4.94 9.94l-3 3c-.12.12-.28.18-.44.18s-.32-.06-.44-.18a.628.628 0 010-.88l3-3c.24-.24.64-.24.88 0 .25.24.25.64 0 .88zm10 3c-.12.12-.28.18-.44.18s-.32-.06-.44-.18l-3-3a.628.628 0 010-.88c.24-.24.64-.24.88 0l3 3c.25.24.25.64 0 .88zm0-9L8.8 10.09c-.22.22-.51.33-.8.33s-.58-.11-.8-.33L1.06 3.94c-.24-.24-.24-.64 0-.88s.64-.24.88 0L8 9.12l6.06-6.06c.24-.24.64-.24.88 0 .25.24.25.64 0 .88z"/></symbol>
+<symbol id="clock" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.59 0 0 3.59 0 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8zm3 9H7.5c-.28 0-.5-.22-.5-.5V3c0-.28.22-.5.5-.5s.5.22.5.5v5h3c.28 0 .5.22.5.5s-.22.5-.5.5z"/></symbol>
+<symbol id="user" viewBox="0 0 16 16"><g fill="none" stroke="currentColor">
+    <circle cx="8" cy="5" r="3.5"/>
+    <path stroke-linecap="round" d="M2.5 15.5c.3-2.8 2.6-5 5.5-5s5.2 2.2 5.5 5"/>
+  </g></symbol>
+<symbol id="buoy" viewBox="0 0 16 16"><path fill="currentColor" d="M13.68 3.21l-2.53 2.53c-.16.16-.18.41-.07.61.27.49.42 1.05.42 1.65 0 .6-.15 1.16-.42 1.65-.11.2-.09.45.07.61l2.53 2.53c.21.21.57.2.75-.04A7.983 7.983 0 0016 8c0-1.78-.59-3.42-1.57-4.75a.494.494 0 00-.75-.04zM5.73 4.85c.16.16.41.18.61.07.5-.27 1.06-.42 1.66-.42.6 0 1.16.15 1.66.42.2.11.45.09.61-.07l2.53-2.53c.21-.21.2-.57-.04-.75A8.036 8.036 0 008 0C6.22 0 4.58.59 3.25 1.57c-.24.18-.26.54-.04.75l2.52 2.53zm4.54 6.3a.512.512 0 00-.61-.07c-.5.27-1.06.42-1.66.42-.6 0-1.16-.15-1.66-.42a.512.512 0 00-.61.07L3.2 13.68c-.21.21-.2.57.04.75C4.58 15.41 6.22 16 8 16c1.78 0 3.42-.59 4.75-1.57.24-.18.25-.54.04-.75l-2.52-2.53zm-5.42-.88c.16-.16.18-.41.07-.61C4.65 9.16 4.5 8.6 4.5 8c0-.6.15-1.16.42-1.66.11-.2.09-.45-.07-.61L2.32 3.21c-.21-.21-.57-.2-.75.04A7.983 7.983 0 000 8c0 1.78.59 3.42 1.57 4.75.18.24.54.25.75.04l2.53-2.52z"/></symbol>
+<symbol id="search" viewBox="0 0 16 16"><circle cx="6" cy="6" r="5.5" fill="none" stroke="currentColor"/>
+  <path stroke="currentColor" stroke-linecap="round" d="M15 15l-5-5"/></symbol>
+<symbol id="pin" viewBox="0 0 16 16"><path fill="currentColor" d="M4.6 1h6.8v1.7l-1.2.6v3.6l2 2.4v.9H8.6V15H7.4v-4.8H3.8v-.9l2-2.4V3.3l-1.2-.6z"/></symbol>
+<symbol id="x" viewBox="0 0 16 16"><path stroke="currentColor" stroke-width=".9" stroke-linecap="round" d="M3 13L13 3m0 10L3 3"/></symbol>
+<symbol id="cd" viewBox="0 0 16 16"><path fill="currentColor" d="M12.375 5.22a1 1 0 011.343 1.476l-.093.085-5 4a1 1 0 01-1.147.072l-.103-.072-5-4a1 1 0 011.147-1.634l.103.072L8 8.72l4.375-3.5z"/></symbol>
+<symbol id="headset" viewBox="0 0 16 16"><path fill="currentColor" d="M9.968 2.404A5 5 0 0 0 3 7h.33c.37 0 .67.285.67.625v3.75c0 .35-.3.625-.67.625H2c-1.11 0-2-.844-2-1.875v-1.25C0 7.833.902 7 2 7a6 6 0 0 1 12 0c1.11 0 2 .844 2 1.875v1.25C16 11.167 15.098 12 14 12h-.1c-.393 1.452-1.452 2.209-2.405 2.59a5.52 5.52 0 0 1-.519.177 1.5 1.5 0 1 1-.164-.995 4.38 4.38 0 0 0 .312-.111c.697-.279 1.392-.768 1.726-1.661h-.18c-.37 0-.67-.285-.67-.625v-3.75c0-.35.3-.625.67-.625H13a4.999 4.999 0 0 0-3.032-4.596ZM13 11h1c.612 0 1-.45 1-.875v-1.25C15 8.453 14.616 8 14 8h-1v3ZM3 8H2c-.612 0-1 .45-1 .875v1.25c0 .422.384.875 1 .875h1V8Z"/></symbol>
+<symbol id="bell" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C6.53 0 5.3.52 4.32 1.56c-2 2.12-2.3 5.86-2.33 7.59C.55 9.6 0 11 0 12c0 .55.45 1 1 1h14c.55 0 1-.45 1-1 0-1-.55-2.4-1.99-2.85-.03-1.73-.33-5.47-2.33-7.59C10.7.52 9.47 0 8 0zm0 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2z"/></symbol>
+<symbol id="edit" viewBox="0 0 16 16"><g fill="none" stroke="currentColor">
+    <path stroke-linejoin="round" d="M10.51 8.4l-3.01.1.1-3.01L12.59.5l2.91 2.91-4.99 4.99z"/>
+    <path stroke-linecap="round" d="M7.41 1.5H2.09a.58.58 0 00-.59.59v11.82a.58.58 0 00.59.59h11.82a.58.58 0 00.59-.59V8.59"/>
+  </g></symbol>
+<symbol id="bm" viewBox="0 0 16 16"><path fill="currentColor" d="M3 2C3 0.895431 3.89543 0 5 0H11C12.1046 0 13 0.895431 13 2V16L8 12.1111L3 16V2Z"/></symbol>
+<symbol id="copy" viewBox="0 0 16 16"><path fill="currentColor" d="M3.5 10a.5.5 0 110 1H1a1 1 0 01-1-1V1a1 1 0 011-1h9a1 1 0 011 1v2.5a.5.5 0 11-1 0V1H1v9h2.5zM6 6v9h9V6H6zm0-1h9a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1V6a1 1 0 011-1z"/></symbol>
+<symbol id="smile" viewBox="0 0 16 16"><g fill="none" stroke="currentColor">
+    <circle cx="8" cy="8" r="7.5"/>
+    <path stroke-linecap="round" d="M4 9c.4 1.7 2.1 3 4 3s3.6-1.3 4-3"/>
+  </g>
+  <g fill="currentColor">
+    <circle cx="6" cy="6" r="1"/>
+    <circle cx="10" cy="6" r="1"/>
+  </g></symbol>
+<symbol id="clip" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-linecap="round" d="M9.5 4v7.7c0 .8-.7 1.5-1.5 1.5s-1.5-.7-1.5-1.5V3C6.5 1.6 7.6.5 9 .5s2.5 1.1 2.5 2.5v9c0 1.9-1.6 3.5-3.5 3.5S4.5 13.9 4.5 12V4"/></symbol>
+<symbol id="link" viewBox="0 0 16 16"><path fill="currentColor" d="M4.441 7.38l.095.083.939.939-.708.707-.939-.939-2 2-.132.142a2.829 2.829 0 003.99 3.99l.142-.132 2-2-.939-.939.707-.708.94.94a1 1 0 01.083 1.32l-.083.094-2 2A3.828 3.828 0 01.972 9.621l.15-.158 2-2A1 1 0 014.34 7.31l.101.07zm7.413-3.234a.5.5 0 01.057.638l-.057.07-7 7a.5.5 0 01-.765-.638l.057-.07 7-7a.5.5 0 01.708 0zm3.023-3.025a3.829 3.829 0 01.15 5.257l-.15.158-2 2a1 1 0 01-1.32.083l-.094-.083-.94-.94.708-.707.939.94 2-2 .132-.142a2.829 2.829 0 00-3.99-3.99l-.142.131-2 2 .939.939-.707.708-.94-.94a1 1 0 01-.082-1.32l.083-.094 2-2a3.828 3.828 0 015.414 0z"/></symbol>
+<symbol id="pen" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-linejoin="round" d="M.5 15.5V13L12.6.9c.2-.2.5-.2.7 0l1.8 1.8c.2.2.2.5 0 .7L3 15.5H.5zM11 3l2 2"/></symbol>
+<symbol id="filt" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" d="M1.35 2.35L6.5 7.5v7.07c0 .4.45.64.78.42l2-1.33c.14-.09.22-.25.22-.42V7.5l5.15-5.15a.5.5 0 00-.35-.85H1.71a.5.5 0 00-.36.85z"/></symbol>
+<symbol id="hist" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0a8 8 0 11-8 8 .5.5 0 011 0 7 7 0 107-7C5.749 1 3.915 2.063 2.597 4H4.5a.5.5 0 01.492.41L5 4.5a.5.5 0 01-.41.492L4.5 5h-3a.5.5 0 01-.492-.41L1 4.5v-3a.5.5 0 01.992-.09L2 1.5v1.615C3.482 1.118 5.53 0 8 0zm-.5 4.5a.5.5 0 01.492.41L8 5v3.359l2.812 2.25a.5.5 0 01.128.628l-.05.075a.5.5 0 01-.627.128l-.075-.05-3-2.4a.5.5 0 01-.18-.3L7 8.6V5a.5.5 0 01.5-.5z"/></symbol>
+<symbol id="dots" viewBox="0 0 16 16"><path fill="currentColor" d="M9.5 2.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm0 5.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm0 5.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></symbol>
+<symbol id="bolt" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" d="M12.17 7.5H9.5L12.96 1c.12-.28-.01-.5-.29-.5H7.5c-.28 0-.6.22-.71.5L4.21 7c-.11.28.01.5.29.5h2.45l-2.64 7.24c-.19.51-.04.95.59.38l7.29-6.87c.43-.4.4-.75-.02-.75z"/></symbol>
+<symbol id="cust" viewBox="0 0 16 16"><g fill="currentColor">
+    <circle cx="8" cy="5" r="4"/>
+    <path d="M8 10a6 6 0 00-6 5.47.5.5 0 00.5.53h10.97a.5.5 0 00.5-.53A6 6 0 008 10z"/>
+  </g></symbol>
+<symbol id="tt" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-linecap="round" d="M2.5 1.5h10m-5 0v14"/></symbol>
+<symbol id="cap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5zM6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></g></symbol>
+<symbol id="chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H9l-5 4zM9 8v5M9 13l-1.5-1.5M9 13l1.5-1.5M14 13V8M14 8l-1.5 1.5M14 8l1.5 1.5"/></g></symbol>
+<symbol id="fork" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-8M12 13L6 7M12 13l6-6M12 3l-3 3M12 3l3 3"/></g></symbol>
+<symbol id="bars" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V12M10 20V6M15 20V10M20 20V4M3 21h18"/></g></symbol>
+<symbol id="bulb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c1 1 1 2 1 3h6c0-1 0-2 1-3a6 6 0 0 0-4-10z"/></g></symbol>
+<symbol id="doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h6"/></g></symbol>
+<symbol id="alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2zM12 10v5M12 18v.5"/></g></symbol>
+<symbol id="tag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="8.5" r="1.2"/><path d="M3 12V4h8l10 10-8 8z"/></g></symbol>
+<symbol id="cl" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></g></symbol>
+<symbol id="cr" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></g></symbol>
+<symbol id="up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11v10H3V11zM7 11l4-8c2 0 3 1.5 2.5 3.5L13 10h6a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 18 21H7"/></g></symbol>
+<symbol id="plus" viewBox="0 0 16 16"><path stroke="currentColor" stroke-linecap="round" d="M7.5 2.5v12m6-6h-12"/></symbol>
+<symbol id="bub" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" d="M1 .5h14c.3 0 .5.2.5.5v10c0 .3-.2.5-.5.5H8l-3.6 3.6c-.3.3-.9.1-.9-.4v-3.3H1c-.3 0-.5-.2-.5-.5V1C.5.7.7.5 1 .5z"/></symbol>
+<symbol id="bubg" viewBox="0 0 16 16"><path fill="currentColor" d="M9 0H3.16C2.03 0 .93.56.38 1.54A2.97 2.97 0 001 5.22v3.07c0 .45.54.67.85.35L4.5 6h4.38c1.45 0 2.78-.98 3.06-2.4C12.31 1.68 10.85 0 9 0zm4 7H7.12c-1.45 0-2.79.98-3.06 2.4A3.004 3.004 0 007 13h4.5l2.65 2.65a.5.5 0 00.85-.35v-3.07c.63-.56 1-1.37 1-2.22A3.01 3.01 0 0013 7z"/></symbol>
+<symbol id="xs" viewBox="0 0 16 16"><path stroke="currentColor" stroke-linecap="round" d="M3 13L13 3m0 10L3 3"/></symbol>
+<symbol id="f-phone" viewBox="0 0 16 16"><g transform="translate(0 0)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M9.96447 10.5858L11.2574 9.29289C11.6479 8.90237 12.281 8.90237 12.6716 9.29289L15.6716 12.2929C16.0621 12.6834 16.0621 13.3166 15.6716 13.7071L14.4393 14.9393C13.0725 16.3062 10.8564 16.3062 9.48959 14.9393L1.02513 6.47487C-0.341709 5.10804 -0.341709 2.89196 1.02513 1.52513L2.25736 0.292893C2.64788 -0.0976311 3.28105 -0.0976311 3.67157 0.292893L6.67157 3.29289C7.0621 3.68342 7.0621 4.31658 6.67157 4.70711L5.37868 6L9.96447 10.5858ZM2.96447 1L1.73223 2.23223C0.755922 3.20854 0.755922 4.79146 1.73223 5.76777L10.1967 14.2322C11.173 15.2085 12.7559 15.2085 13.7322 14.2322L14.9645 13L11.9645 10L9.96447 12L3.96447 6L5.96447 4L2.96447 1Z"/></g></symbol>
+<symbol id="f-bubble" viewBox="0 0 16 16"><g transform="translate(0 0)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M1 1V10.9H4V14.7C4 14.7307 4.04445 14.7484 4.04645 14.7464L7.79289 11H15V1H1ZM3 11.9H1C0.423858 11.9 0 11.4761 0 10.9V1C0 0.423858 0.423858 0 1 0H15C15.5761 0 16 0.423858 16 1V11C16 11.5761 15.5761 12 15 12H8.20711L4.75355 15.4536C4.12698 16.0801 3 15.6293 3 14.7V11.9Z"/></g></symbol>
+<symbol id="f-plus" viewBox="0 0 16 16"><g transform="translate(1.5 1.5)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M6.5 0C6.22386 0 6 0.223858 6 0.5V6H0.5C0.223858 6 0 6.22386 0 6.5C0 6.77614 0.223858 7 0.5 7H6V12.5C6 12.7761 6.22386 13 6.5 13C6.77614 13 7 12.7761 7 12.5V7H12.5C12.7761 7 13 6.77614 13 6.5C13 6.22386 12.7761 6 12.5 6H7V0.5C7 0.223858 6.77614 0 6.5 0Z"/></g></symbol>
+<symbol id="f-search" viewBox="0 0 16 16"><g transform="translate(0 0)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M0 6C0 9.31371 2.68629 12 6 12C7.47685 12 8.82908 11.4664 9.87442 10.5815L14.6464 15.3536C14.8417 15.5488 15.1583 15.5488 15.3536 15.3536C15.5488 15.1583 15.5488 14.8417 15.3536 14.6464L10.5815 9.87442C11.4664 8.82908 12 7.47685 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6ZM6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z"/></g></symbol>
+<symbol id="f-chev" viewBox="0 0 16 16"><g transform="translate(2.5 5.5)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M10.1877 0.109584C10.4033 -0.0629208 10.7179 -0.0279601 10.8905 0.187671C11.0438 0.379343 11.0332 0.649249 10.8775 0.828018L10.8124 0.890453L5.81237 4.89045C5.65584 5.01567 5.44285 5.03356 5.27019 4.94412L5.18767 4.89045L0.187671 0.890453C-0.0279601 0.717948 -0.0629208 0.403302 0.109584 0.187671C0.262922 -0.00400108 0.528568 -0.0529212 0.737153 0.0597296L0.812366 0.109584L5.50002 3.85902L10.1877 0.109584Z"/></g></symbol>
+<symbol id="f-filter" viewBox="0 0 16 16"><g transform="translate(0.5 0.5)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M5.29283 6.70712L0.289275 1.70357C0.00315756 1.41172 -0.0783727 0.981764 0.0790738 0.610015C0.23652 0.238267 0.602057 -0.00234558 1.00283 1.7246e-05L13.5999 6.65719e-05C13.9999 0.00568663 14.3581 0.249241 14.5105 0.619218C14.6628 0.989195 14.58 1.41437 14.2964 1.70357L9.29283 6.70712V12.24C9.29283 12.5788 9.12794 12.8976 8.8497 13.0764L6.85018 14.406C6.18703 14.8481 5.29283 14.3683 5.29283 13.57V6.70712ZM0.999891 1.00001L6.29283 6.29291V13.57C6.29283 13.5702 8.30245 12.2394 8.30245 12.2394C8.29358 12.2451 8.29283 6.29291 8.29283 6.29291L8.43927 6.14646L13.5858 0.999968L0.999891 1.00001Z"/></g></symbol>
+<symbol id="f-history" viewBox="0 0 16 16"><g transform="translate(0 0)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M16 8C16 3.58172 12.4183 0 8 0C5.53028 0 3.48184 1.11748 2 3.11499V1.5L1.99194 1.41012C1.94961 1.17688 1.74546 1 1.5 1C1.22386 1 1 1.22386 1 1.5V4.5L1.00806 4.58988C1.05039 4.82312 1.25454 5 1.5 5H4.5L4.58988 4.99194C4.82312 4.94961 5 4.74546 5 4.5L4.99194 4.41012C4.94961 4.17688 4.74546 4 4.5 4H2.59764C3.91575 2.06249 5.74896 1 8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 7.72386 0.776142 7.5 0.5 7.5C0.223858 7.5 0 7.72386 0 8C0 12.4183 3.58172 16 8 16C12.4183 16 16 12.4183 16 8ZM7.5 4.5C7.74546 4.5 7.94961 4.67688 7.99194 4.91012L8 5V8.359L10.8123 10.6096C11.004 10.7629 11.0529 11.0286 10.9403 11.2371L10.8904 11.3123C10.7371 11.504 10.4714 11.5529 10.2629 11.4403L10.1877 11.3904L7.18765 8.99043C7.09277 8.91453 7.0296 8.8074 7.00813 8.68982L7 8.6V5C7 4.72386 7.22386 4.5 7.5 4.5Z"/></g></symbol>
+<symbol id="f-overflow" viewBox="0 0 16 16"><g transform="translate(6.5 1)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M3 1.5C3 2.32843 2.32843 3 1.5 3C0.671573 3 0 2.32843 0 1.5C0 0.671573 0.671573 0 1.5 0C2.32843 0 3 0.671573 3 1.5ZM3 7C3 7.82843 2.32843 8.5 1.5 8.5C0.671573 8.5 0 7.82843 0 7C0 6.17157 0.671573 5.5 1.5 5.5C2.32843 5.5 3 6.17157 3 7ZM3 12.5C3 13.3284 2.32843 14 1.5 14C0.671573 14 0 13.3284 0 12.5C0 11.6716 0.671573 11 1.5 11C2.32843 11 3 11.6716 3 12.5Z"/></g></symbol>
+<symbol id="f-bolt" viewBox="0 0 16 16"><g transform="translate(3 0)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M6.77991 7.04347H8.65074C9.68307 7.04347 9.72785 8.01689 9.02025 8.66737L1.59012 15.587C1.10946 16.0167 0.621593 16.1664 0.257168 15.7673C0.00111425 15.4869 0.012347 15.0762 0.169555 14.6592L2.60832 8.04967H0.841295C0.177285 8.04967 -0.164883 7.45586 0.0783367 6.84473L2.69909 0.822248C2.88575 0.352698 3.39631 0 3.89584 0H9.15983C9.82665 0 10.1833 0.604224 9.90449 1.24261L6.77991 7.04347ZM5.08448 8.04967L5.48281 7.31017L8.88036 1.00621H3.89584C3.81981 1.00621 3.68207 1.10136 3.64061 1.20495L1.09991 7.04347H4.06335L3.81412 7.71892L1.33257 14.4444L8.19893 8.04967H5.08448Z"/></g></symbol>
+<symbol id="f-smiley" viewBox="0 0 16 16"><g transform="translate(0 0)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M7 6C7 6.55228 6.55228 7 6 7C5.44772 7 5 6.55228 5 6C5 5.44772 5.44772 5 6 5C6.55228 5 7 5.44772 7 6ZM3.51329 9.11452C3.45004 8.84572 3.61668 8.57654 3.88548 8.51329C4.15428 8.45004 4.42346 8.61668 4.48671 8.88548C4.83492 10.3654 6.33893 11.5 8 11.5C9.66107 11.5 11.1651 10.3654 11.5133 8.88548C11.5765 8.61668 11.8457 8.45004 12.1145 8.51329C12.3833 8.57654 12.55 8.84572 12.4867 9.11452C12.0299 11.0559 10.1157 12.5 8 12.5C5.88432 12.5 3.97009 11.0559 3.51329 9.11452ZM10 7C10.5523 7 11 6.55228 11 6C11 5.44772 10.5523 5 10 5C9.44771 5 9 5.44772 9 6C9 6.55228 9.44771 7 10 7ZM8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16ZM8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15Z"/></g></symbol>
+<symbol id="f-clip" viewBox="0 0 16 16"><g transform="translate(4 0)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M5 4C5 3.72386 5.22386 3.5 5.5 3.5C5.77614 3.5 6 3.72386 6 4V11.7C6 12.7761 5.07614 13.7 4 13.7C2.92386 13.7 2 12.7761 2 11.7V3C2 1.32386 3.32386 0 5 0C6.67614 0 8 1.32386 8 3V12C8 14.1761 6.17614 16 4 16C1.82386 16 0 14.1761 0 12V4C0 3.72386 0.223858 3.5 0.5 3.5C0.776142 3.5 1 3.72386 1 4V12C1 13.6239 2.37614 15 4 15C5.62386 15 7 13.6239 7 12V3C7 1.87614 6.12386 1 5 1C3.87614 1 3 1.87614 3 3V11.7C3 12.2239 3.47614 12.7 4 12.7C4.52386 12.7 5 12.2239 5 11.7V4Z"/></g></symbol>
+<symbol id="f-link" viewBox="0 0 16 16"><g transform="translate(0 0)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M4.44133 7.3797L4.53553 7.46289L5.475 8.402L4.767 9.109L3.82843 8.17L1.82843 10.17L1.69611 10.3115C0.725775 11.4226 0.769881 13.1115 1.82843 14.17C2.88697 15.2285 4.57581 15.2727 5.68688 14.3023L5.82843 14.17L7.82843 12.17L6.889 11.231L7.596 10.523L8.53553 11.4629C8.89602 11.8234 8.92375 12.3906 8.61872 12.7829L8.53553 12.8771L6.53553 14.8771C5.04044 16.3722 2.61641 16.3722 1.12132 14.8771C-0.322218 13.4336 -0.371996 11.1241 0.971989 9.6208L1.12132 9.46289L3.12132 7.46289C3.45176 7.13245 3.95593 7.08161 4.33983 7.31038L4.44133 7.3797ZM11.8536 4.14645C12.0271 4.32001 12.0464 4.58944 11.9114 4.78431L11.8536 4.85355L4.85355 11.8536C4.65829 12.0488 4.34171 12.0488 4.14645 11.8536C3.97288 11.68 3.9536 11.4106 4.08859 11.2157L4.14645 11.1464L11.1464 4.14645C11.3417 3.95118 11.6583 3.95118 11.8536 4.14645ZM14.8771 1.12132C16.3206 2.56486 16.3704 4.87437 15.0264 6.37763L14.8771 6.53553L12.8771 8.53553C12.5166 8.89602 11.9494 8.92375 11.5571 8.61872L11.4629 8.53553L10.523 7.596L11.231 6.889L12.17 7.82843L14.17 5.82843L14.3023 5.68688C15.2727 4.57581 15.2285 2.88697 14.17 1.82843C13.1115 0.769881 11.4226 0.725775 10.3115 1.69611L10.17 1.82843L8.17 3.82843L9.109 4.767L8.402 5.475L7.46289 4.53553C7.10241 4.17505 7.07468 3.60782 7.3797 3.21553L7.46289 3.12132L9.46289 1.12132C10.958 -0.373773 13.382 -0.373773 14.8771 1.12132Z"/></g></symbol>
+<symbol id="f-pencil" viewBox="0 0 16 16"><g transform="translate(0 0)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M0 12.9524V15.4921C0 15.7726 0.227411 16 0.507937 16H3.04762C3.18233 16 3.31153 15.9465 3.40678 15.8512L15.6988 3.55917C16.1004 3.15763 16.1004 2.53126 15.6988 2.12972L13.8703 0.301152C13.4687 -0.100384 12.8424 -0.100384 12.4408 0.301152L0.148771 12.5932C0.0535146 12.6885 0 12.8177 0 12.9524ZM2.83722 14.9841H1.01587V13.1628L10.9206 3.25801L12.742 5.07937L2.83722 14.9841ZM13.4603 4.36103L14.9769 2.84444L13.1556 1.02309L11.639 2.53968L13.4603 4.36103Z"/></g></symbol>
+<symbol id="f-notes" viewBox="0 0 16 16"><g transform="translate(0.5 0.5)"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M9.52676 8.89972L6.51676 8.99972C6.22772 9.00933 5.99083 8.77244 6.00043 8.4834L6.10043 5.4734C6.10465 5.3466 6.1569 5.22615 6.24661 5.13645L11.2366 0.146447C11.4319 -0.0488155 11.7485 -0.0488155 11.9437 0.146447L14.8537 3.05645C15.049 3.25171 15.049 3.56829 14.8537 3.76355L9.86371 8.75355C9.77401 8.84326 9.65355 8.89551 9.52676 8.89972ZM13.7931 3.41L11.5902 1.20711L7.09333 5.70394L7.01763 7.98253L9.29622 7.90683L13.7931 3.41ZM6.91016 1.5C6.91016 1.22386 6.6863 1 6.41016 1H1.09016C0.805951 0.994981 0.523542 1.10909 0.316396 1.31624C0.10925 1.52338 -0.00486066 1.80579 0.000234499 2.0987L0.000158868 13.91C-0.00486066 14.1942 0.10925 14.4766 0.316396 14.6838C0.523542 14.8909 0.805951 15.005 1.09886 14.9999L12.9102 15C13.1944 15.005 13.4768 14.8909 13.6839 14.6838C13.8911 14.4766 14.0052 14.1942 14.0001 13.9013L14.0002 8.59C14.0002 8.31386 13.7763 8.09 13.5002 8.09C13.224 8.09 13.0002 8.31386 13.0002 8.59V13.91C13.0006 13.9404 12.9922 13.9613 12.9768 13.9767C12.9615 13.992 12.9406 14.0005 12.9189 14.0001L1.09016 14C1.05977 14.0005 1.03885 13.992 1.0235 13.9767C1.00816 13.9613 0.999706 13.9404 1.00008 13.9187L1.00016 2.09C0.999706 2.05961 1.00816 2.03869 1.0235 2.02334C1.03885 2.008 1.05977 1.99955 1.08146 1.99992L6.41016 2C6.6863 2 6.91016 1.77614 6.91016 1.5Z"/></g></symbol>
+<symbol id="uc-s" viewBox="0 0 16 16"><g fill="none" stroke="currentColor">
+    <circle cx="8" cy="8" r="7.5"/>
+    <circle cx="8" cy="5.5" r="2"/>
+    <path stroke-linecap="round" d="M11.5 12c-.6-1.5-1.8-2.5-3.5-2.5s-2.9 1-3.5 2.5"/>
+  </g></symbol>
+<symbol id="uc-f" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 3c1.4 0 2.5 1.1 2.5 2.5S9.4 8 8 8 5.5 6.9 5.5 5.5 6.6 3 8 3zm3.7 9H4.3c-.3 0-.4-.3-.3-.5C4.7 10 6.2 9 8 9s3.3 1 4 2.5c.1.2-.1.5-.3.5z"/></symbol>
+<symbol id="f-tt" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M1 3.2h9M5.5 3.2v10M9.5 7.6h5.5M12.25 7.6v5.6"/></g></symbol>
+<symbol id="exp" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18V6M7 11l5-5 5 5M5 20h14"/></g></symbol><symbol id="cpy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M9 7h9v13H9zM6 17V4h9"/></g></symbol></defs>
+</svg>
+
+<div class="stage">
+<div class="scaler" id="scaler">
+<div class="frame" id="frame" data-beat="3">
+
+  <div class="chrome"><i></i><i></i><i></i><span class="url">support.example.com</span></div>
+
+  <div class="app">
+    <nav class="rail" aria-hidden="true">
+      <div class="logo"><svg class="i"><use href="#chat"/></svg></div>
+      <svg class="i"><use href="#home"/></svg>
+      <svg class="i"><use href="#mail"/></svg>
+      <svg class="i"><use href="#clock"/></svg>
+      <svg class="i"><use href="#cust"/></svg>
+      <svg class="i"><use href="#buoy"/></svg>
+      <div class="sp"></div>
+    </nav>
+
+    <section class="desk">
+      <div class="tabs">
+        <div class="tab tcall" title="Conversation with Adam Reyes">
+          <span class="ph live" id="phoneIco"><svg class="i"><use href="#f-phone"/></svg></span>
+          <div class="tt"><div class="t1">Conversation with Ada…</div><div class="t2" id="timer">00:42</div></div>
+          <span class="cx"><svg class="i"><use href="#xs"/></svg></span>
+        </div>
+        <div class="tab"><span class="ph"><svg class="i"><use href="#f-bubble"/></svg></span>
+          <div class="tt"><div class="t1">Conversation with Mat…</div><div class="t2">#18201</div></div><span class="cx"><svg class="i"><use href="#xs"/></svg></span></div>
+        <div class="tab"><span class="ph"><svg class="i"><use href="#f-bubble"/></svg></span>
+          <div class="tt"><div class="t1">Missed Conversation…</div><div class="t2">#18200</div></div><span class="cx"><svg class="i"><use href="#xs"/></svg></span></div>
+        <div class="add"><svg class="i"><use href="#f-plus"/></svg>Add</div>
+        <div class="sq"><svg class="i"><use href="#f-search"/></svg></div>
+        <div class="sp"></div>
+                        <div class="avt"><svg class="i"><use href="#cust"/></svg></div>
+      </div>
+      <div class="crumb"><span>Suth (Create)</span><span>Sol Marin</span><span><i class="status" id="stat" style="font-style:normal">Open</i> Ticket #18212</span></div>
+
+      <div class="cols">
+        <aside class="fields">
+          <div class="fld"><label>Requester</label>
+            <div class="sel"><span class="l"><svg class="i ic"><use href="#uc-s"/></svg>Adam Reyes</span><svg class="i cv"><use href="#f-chev"/></svg></div></div>
+          <div class="fld"><label>Assignee</label>
+            <div class="sel"><span class="l"><svg class="i ic"><use href="#uc-f"/></svg>US-East / Sol Marin</span><svg class="i cv"><use href="#f-chev"/></svg></div></div>
+          <div class="fld"><label>Tags</label>
+            <div class="tagbox">
+              <span class="tg">voice <span class="x">✕</span></span>
+              <span class="tg">retention <span class="x">✕</span></span>
+              <span class="tg newtag" id="newtag">saved_retention <span class="x">✕</span></span>
+            </div></div>
+          <div class="fld"><label>Type</label>
+            <div class="sel"><span class="l">Cancellation</span><svg class="i cv"><use href="#f-chev"/></svg></div></div>
+          <div class="fld"><label>Priority</label>
+            <div class="sel"><span class="l">Normal</span><svg class="i cv"><use href="#f-chev"/></svg></div></div>
+          <div class="fld"><label>Product</label>
+            <div class="sel"><span class="l">Streaming</span><svg class="i cv"><use href="#f-chev"/></svg></div></div>
+        </aside>
+
+        <div class="call">
+          <div class="chead" id="chead">
+            <div><b>Call from +1 (415) 555-0142 at 8/30/2026, 6:42 PM</b>
+              <div class="st" id="callst">Call active</div></div>
+            <div class="ico"><svg class="i"><use href="#f-filter"/></svg><svg class="i"><use href="#f-history"/></svg><svg class="i"><use href="#f-overflow"/></svg></div>
+          </div>
+
+          <div class="msgs">
+            <div class="sysmsg" data-s="0.4">Transferred from virtual agent</div>
+            <div class="m" data-s="1.0"><div class="av c"><svg class="i"><use href="#cust"/></svg></div><div><div class="h">Adam Reyes<span>less than a min ago</span></div>
+              <div class="tx ev">Joined</div></div></div>
+            <div class="m" data-s="1.5"><div class="av a"><svg class="i"><use href="#cust"/></svg></div><div><div class="h">Sol Marin<span>less than a min ago</span></div>
+              <div class="tx ev">Joined</div></div></div>
+            <div class="m" data-s="5.4"><div class="av c"><svg class="i"><use href="#cust"/></svg></div><div><div class="h">Adam Reyes<span>less than a min ago</span></div>
+              <div class="tx">uh i i <mark>missed the game</mark> again. <mark>third time this month</mark>. just <mark>cancel it</mark></div></div></div>
+            <div class="m" data-s="12.4"><div class="av a"><svg class="i"><use href="#cust"/></svg></div><div><div class="h">Sol Marin<span>less than a min ago</span></div>
+              <div class="tx">i'm so sorry atom. three missed games isn't okay. what are you watching on</div></div></div>
+            <div class="m" data-s="16.0"><div class="av c"><svg class="i"><use href="#cust"/></svg></div><div><div class="h">Adam Reyes<span>less than a min ago</span></div>
+              <div class="tx"><mark>roku ultra</mark> in the living room</div></div></div>
+            <div class="m" data-s="19.4"><div class="av a"><svg class="i"><use href="#cust"/></svg></div><div><div class="h">Sol Marin<span>less than a min ago</span></div>
+              <div class="tx">this isn't your set up. it's on our end during live games and we have a fix going in before saturday</div></div></div>
+            <div class="m" data-s="24.4"><div class="av c"><svg class="i"><use href="#cust"/></svg></div><div><div class="h">Adam Reyes<span>less than a min ago</span></div>
+              <div class="tx">okay um but honestly <mark>for what i pay this keeps happening</mark></div></div></div>
+            <div class="m" data-s="29.4"><div class="av a"><svg class="i"><use href="#cust"/></svg></div><div><div class="h">Sol Marin<span>less than a min ago</span></div>
+              <div class="tx">i'm crediting the three games you missed <mark>and i can take twenty five percent off for the next three months</mark></div></div></div>
+            <div class="m" data-s="35.4"><div class="av c"><svg class="i"><use href="#cust"/></svg></div><div><div class="h">Adam Reyes<span>less than a min ago</span></div>
+              <div class="tx">alright that works. thanks for sorting it out</div></div></div>
+            <div class="sysmsg" data-s="38.0">Call ended · 3:58</div>
+          </div>
+
+          <div class="note">
+            <div class="nh"><svg class="i"><use href="#f-notes"/></svg>Internal Note <svg class="i" style="font-size:11px"><use href="#f-chev"/></svg></div>
+            <div class="tb"><svg class="i"><use href="#f-tt"/></svg><svg class="i"><use href="#f-smiley"/></svg><svg class="i"><use href="#f-clip"/></svg><svg class="i"><use href="#f-link"/></svg><svg class="i"><use href="#f-pencil"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bar">
+        <div class="macro"><span class="l"><svg class="i"><use href="#f-bolt"/></svg>Apply macro</span><svg class="i cv" style="color:var(--muted)"><use href="#f-chev"/></svg></div>
+        <span class="stay">Stay on Ticket</span>
+        <div class="submit"><span>Submit as Open</span><i><svg class="i"><use href="#f-chev"/></svg></i></div>
+      </div>
+    </section>
+
+    <!-- Agent Success panel -->
+    <aside class="as" aria-label="Agent Success">
+      <div class="ash"><b>Agent Success</b><div class="ico"><svg class="i"><use href="#pin"/></svg><svg class="i"><use href="#x"/></svg></div></div>
+      <div class="body" id="asbody">
+        <div class="search" id="asSearch"><svg class="i"><use href="#f-search"/></svg>Search for answers</div>
+
+        <!-- Contact Information (beats 1-4) -->
+        <div class="card ci" id="ci">
+          <div class="ch"><span class="dot k"><svg class="i"><use href="#doc"/></svg></span><span class="t">Contact Information</span></div>
+          <div class="grid">
+            <div class="c"><small>Name</small><b class="reg">Adam Reyes</b></div>
+            <div class="c"><small>Customer Since</small><b>March 2020</b></div>
+            <div class="c"><small>Authentication</small><span class="pill">Verified: Virtual Agent</span></div>
+            <div class="c"><small>Mostly Watches</small><b>Live sports</b></div>
+            <div class="c" style="border-bottom:1px solid var(--line)"><small>Account Type</small><b>Premium, monthly</b></div>
+            <div class="c"><small>Plan Price</small><b>$29.99/mo</b></div>
+          </div>
+          <div class="full"><small>Contacts Last 90 Days</small>
+            <div>Aug 09, 2026 <b>Buffering issues</b></div>
+            <div>Aug 23, 2026 <b>Buffering issues</b></div></div>
+        </div>
+
+        <!-- Carousel: 1/1 tip -->
+        <div class="car" id="car">
+        <div class="card cc" data-i="0">
+          <div class="ch"><span class="dot mg"><svg class="i"><use href="#bulb"/></svg></span><span class="t">Empathize, then diagnose</span>
+            <span class="ctr"><svg class="i"><use href="#cl"/></svg>1/1<svg class="i"><use href="#cr"/></svg></span></div>
+          <div class="chips"><span class="chip red">Churn Risk: High</span></div>
+          <div class="say">“I’m sorry, Adam. Missing a live game three times isn’t okay. Let me find out what’s going on.”</div>
+          <div class="sig">Signals: Live sports viewer, 2 buffering contacts this month, cancel request, frustrated tone</div>
+          <div class="src"><a>Retention Protocol</a><span>May 20, 2024</span></div>
+        </div>
+
+        <!-- Carousel: 2/2 incident -->
+        <div class="card cc" data-i="1">
+          <div class="ch"><span class="dot a"><svg class="i"><use href="#alert"/></svg></span><span class="t">Active incident: live-event buffering</span>
+            <span class="ctr"><svg class="i"><use href="#cl"/></svg>2/2<svg class="i"><use href="#cr"/></svg></span></div>
+          <div class="chips"><span class="chip amber">Active incident</span></div>
+          <ol class="steps">
+            <li>Don't troubleshoot the device. This isn't his setup.</li>
+            <li>Confirm the incident and the fix timing: before Saturday's games.</li>
+            <li>Offer a follow-up when it's resolved.</li>
+          </ol>
+          <div class="say">“This isn’t your setup. It’s on our end during live games, and we have a fix going in before Saturday.”</div>
+          <div class="sig">Signals: Matches active incident, Roku and smart TV apps affected, 2 prior buffering contacts during live events</div>
+          <div class="src"><a>Incident: Live Event Streaming</a><span>Updated today</span></div>
+        </div>
+
+        <!-- Carousel: 3/3 offers -->
+        <div class="card cc" data-i="2">
+          <div class="ch"><span class="dot p"><svg class="i"><use href="#tag"/></svg></span><span class="t">Retention offers, ranked by fit</span>
+            <span class="ctr"><svg class="i"><use href="#cl"/></svg>3/3<svg class="i"><use href="#cr"/></svg></span></div>
+          <div class="chips"><span class="chip red">Churn Risk: High</span></div>
+          <ol class="steps">
+            <li>Credit for missed games (service failure)</li>
+            <li>25% off for 3 months (price concern)</li>
+            <li>Premium Plus, 30 days free (6-year customer)</li>
+          </ol>
+          <div class="say">“I’m crediting the three games you missed.”</div>
+          <div class="sig">Signals: Service failure, price objection, eligible for all three offers</div>
+          <div class="src"><a>Retention Offers</a><span>Jun 1, 2026</span></div>
+        </div>
+
+        </div>
+        <!-- After-call -->
+        <div class="rv" id="rvSum"><div class="rvi"><div class="card sum" id="sum">
+          <div class="ch"><span class="dot b"><svg class="i"><use href="#doc"/></svg></span><span class="t">Contact Summary</span><span class="acw">After-call work 0:08</span></div>
+          <div class="lbl">Issue</div>
+          <p>Adam called to cancel after an active live-event incident caused buffering three times this month on his Roku Ultra, then raised price.</p>
+          <div class="lbl">Resolution</div>
+          <p>Confirmed the incident and the fix before Saturday. Credited the missed games and applied 25% off for three months. Account kept.</p>
+          <div class="grid">
+            <div><small>Save Reason</small><b>Service outage, price</b></div>
+            <div><small>Offer</small><b>Game credit, 25% off ×3</b></div>
+            <div><small>Incident</small><b>Live event streaming</b></div>
+            <div><small>Competitor Mention</small><b>None</b></div>
+          </div>
+          <div class="acts"><svg class="i"><use href="#exp"/></svg><svg class="i"><use href="#cpy"/></svg></div>
+        </div>
+
+        </div></div>
+        <div class="rv" id="rvFb"><div class="rvi"><div class="fb">
+          <div class="ch"><span class="dot r"><svg class="i"><use href="#up"/></svg></span><span class="t">Call Feedback</span></div>
+          <div class="gbox"><h4>Contact Summary</h4>
+            <p>You took the blame off Adam right away and skipped troubleshooting he didn't need. Leading with the credit fit a service failure. You told him a fix was coming, but not how he'd know it worked.</p></div>
+          <div class="coach"><h4>Close the Loop on the Fix</h4>
+            <h5>What we heard</h5>
+            <p>You: "…we have a fix going in before Saturday." Adam: "Okay. But honestly, for what I pay, this keeps happening."</p>
+            <h5>Coaching Tip</h5>
+            <p>"A fix is coming" asks him to trust the thing that already failed three times. A promised follow-up gives him a reason to stay through Saturday.</p>
+            <h5>Try this</h5>
+            <p>"I'll text you the moment the fix is live, before kickoff."</p>
+            <div class="thumbs"><svg class="i"><use href="#up"/></svg><svg class="i" style="transform:scaleY(-1)"><use href="#up"/></svg></div>
+          </div>
+        </div></div></div>
+      </div>
+    </aside>
+  </div>
+</div>
+</div>
+
+<div class="foot">
+  <div class="ctl" id="ctl">
+    <button type="button" id="bPause" aria-label="Pause animation"><svg viewBox="0 0 16 16" width="12" height="12"><path id="icPause" fill="currentColor" d="M3 2h3.5v12H3zM9.5 2H13v12H9.5z"/></svg><span id="lPause">Pause</span></button>
+    <button type="button" id="bReplay" aria-label="Replay animation"><svg viewBox="0 0 16 16" width="12" height="12"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2.5v3h3"/></svg>Replay</button>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  var frame=document.getElementById('frame'), scaler=document.getElementById('scaler');
+  var RATE=0.22, T_END=54, LOOP_HOLD=0;
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $=function(id){return document.getElementById(id)};
+
+  /* --- split transcript text into words; marks highlight once their words land --- */
+  function wrap(el){
+    var words=[],marks=[];
+    (function walk(node,mark){
+      Array.prototype.slice.call(node.childNodes).forEach(function(c){
+        if(c.nodeType===3){
+          var frag=document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach(function(p){
+            if(!p) return;
+            if(/^\s+$/.test(p)) frag.appendChild(document.createTextNode(p));
+            else{var w=document.createElement('span');w.className='w';w.textContent=p;frag.appendChild(w);words.push(w);if(mark)mark.last=words.length;}
+          });
+          node.replaceChild(frag,c);
+        }else if(c.nodeName==='MARK'){var m={el:c,last:0};marks.push(m);walk(c,m);}
+      });
+    })(el,null);
+    return {words:words,marks:marks};
+  }
+  var rows=Array.prototype.map.call(frame.querySelectorAll('.msgs > [data-s]'),function(el){
+    var tx=el.querySelector('.tx'), r={el:el,s:parseFloat(el.dataset.s),words:[],marks:[]};
+    if(tx&&!tx.classList.contains('ev')){var w=wrap(tx);r.words=w.words;r.marks=w.marks;}
+    return r;
+  });
+
+  var ci=$('ci'), fv=Array.prototype.slice.call(ci.querySelectorAll('.c b, .c .pill, .full div'));
+  fv.forEach(function(e){e.classList.add('fv')});
+  var car=$('car'), cards=Array.prototype.slice.call(car.querySelectorAll('.cc'));
+  var search=$("asSearch"), rvSum=$('rvSum'), rvFb=$('rvFb'), newtag=$('newtag');
+  var phone=$('phoneIco'), chead=$('chead'), callst=$('callst'), timer=$('timer');
+
+  /* timeline (seconds) */
+  var T={fill:1.8,fillStep:.18, card:[9.0,18.0,27.6], timer:[[0,'00:04'],[5,'00:10'],[12,'01:42'],[24,'02:51'],[35,'03:49'],[38,'03:58']],
+         end:38.0, tag:38.6, out:40.0, gone:40.35, sum:40.6, fb:43.5};
+  var BEAT_END={1:4.5,2:11.5,3:24.3,4:34.9,5:53};
+
+  var carIdx=-2, lastGone=null;
+  function setCar(i){
+    if(i===carIdx) return; carIdx=i;
+    cards.forEach(function(c,k){c.classList.toggle('act',k===i);c.setAttribute('aria-hidden',k===i?'false':'true')});
+    car.classList.toggle('open',i>=0);
+    car.style.height=i>=0?cards[i].offsetHeight+'px':'0px';
+  }
+
+  function render(t){
+    rows.forEach(function(r){
+      r.el.classList.toggle('show',t>=r.s);
+      r.words.forEach(function(w,i){w.classList.toggle('on',t>=r.s+.15+i*RATE)});
+      r.marks.forEach(function(m){m.el.classList.toggle('on',t>=r.s+.15+m.last*RATE+.2)});
+    });
+    fv.forEach(function(e,i){e.classList.toggle('on',t>=T.fill+i*T.fillStep)});
+    var fade=t>=T.out, gone=t>=T.gone;
+    [ci,search,car].forEach(function(e){e.classList.toggle('fade',fade&&!gone);e.hidden=gone});
+    var ci_i=-1; T.card.forEach(function(c,k){if(t>=c)ci_i=k}); if(t>=T.out) ci_i=-1;
+    setCar(ci_i);
+    var ended=t>=T.end;
+    phone.classList.toggle('live',!ended); chead.classList.toggle('ended',ended);
+    callst.textContent=ended?'Call ended':'Call active';
+    newtag.classList.toggle('on',t>=T.tag);
+    var tm='00:04'; T.timer.forEach(function(x){if(t>=x[0])tm=x[1]}); timer.textContent=tm;
+    rvSum.classList.toggle('on',t>=T.sum);
+    rvFb.classList.toggle('on',t>=T.fb);
+  }
+
+  /* --- player --- */
+  var t=0,last=0,raf=0,playing=false,userPaused=false,inView=false;
+  function hard(fn){frame.classList.add('notrans');fn();void frame.offsetHeight;carIdx=-2;render(t);void frame.offsetHeight;frame.classList.remove('notrans');}
+  function seek(x){t=x;hard(function(){});}
+  function setBtn(){var p=$('lPause');if(p)p.textContent=(userPaused||!playing)?'Play':'Pause';
+    var b=$('bPause');if(b)b.setAttribute('aria-label',(userPaused||!playing)?'Play animation':'Pause animation');
+    $('icPause').setAttribute('d',(userPaused||!playing)?'M4 2l9 6-9 6z':'M3 2h3.5v12H3zM9.5 2H13v12H9.5z');}
+  function tick(ts){
+    if(!playing) return;
+    t+=Math.min(.1,(ts-last)/1000); last=ts;
+    if(t>=T_END){t=0;hard(function(){});}
+    else render(t);
+    raf=requestAnimationFrame(tick);
+  }
+  function play(){if(playing||reduce)return;playing=true;last=performance.now();raf=requestAnimationFrame(tick);setBtn();}
+  function pause(){playing=false;cancelAnimationFrame(raf);setBtn();}
+
+  $('bPause').addEventListener('click',function(){
+    if(userPaused||!playing){userPaused=false;if(inView)play();else setBtn();}
+    else{userPaused=true;pause();}
+  });
+  $('bReplay').addEventListener('click',function(){userPaused=false;pause();seek(0);play();});
+
+  function fit(){
+    var s=Math.min(1,scaler.clientWidth/1200);
+    frame.style.transform='scale('+s+')';
+    scaler.style.height=(760*s)+'px';
+    if(window.parent!==window) parent.postMessage({sasHero:document.querySelector('.stage').offsetHeight,frame:760*s},'*');
+  }
+  window.addEventListener('resize',fit); fit();
+  document.fonts&&document.fonts.ready&&document.fonts.ready.then(fit);
+
+
+  /* start */
+  seek(0);
+  if(reduce){seek(T_END-1);$('ctl').hidden=true;}
+  else if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      inView=es[0].isIntersecting;
+      if(inView&&!userPaused)play(); else if(!inView)pause();
+    },{threshold:.35}).observe(scaler);
+  } else play();
+  setBtn();
+  document.fonts&&document.fonts.ready&&document.fonts.ready.then(function(){carIdx=-2;render(t)});
+})();
+</script>
+</body>
+</html>
