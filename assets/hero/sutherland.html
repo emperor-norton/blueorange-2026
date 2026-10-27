@@ -183,11 +183,11 @@ mark{background:transparent;transition:background-color .5s ease}mark.on{backgro
 .fv{opacity:0;transition:opacity .45s ease}.fv.on{opacity:1}
 .newtag{max-width:0;opacity:0;padding-left:0;padding-right:0;overflow:hidden;white-space:nowrap;border:0;transition:max-width .4s ease,opacity .4s ease,padding .4s ease}
 .newtag.on{max-width:150px;opacity:1;padding-left:7px;padding-right:7px}
-.car{position:relative;height:0;margin-top:-9px;flex:none;transition:height .5s ease,margin-top .5s ease}
+.car{position:relative;height:0;margin-top:-9px;flex:none}
 .car.open{margin-top:0}
 .cc{position:absolute;left:0;right:0;top:0;opacity:0;pointer-events:none;transition:opacity .22s ease}
 .cc.act{opacity:1;pointer-events:auto;transition:opacity .3s ease .2s}
-.rv{display:grid;grid-template-rows:0fr;opacity:0;margin-top:-9px;flex:none;transition:grid-template-rows .55s ease,opacity .45s ease,margin-top .55s ease}
+.rv{display:grid;grid-template-rows:0fr;opacity:0;margin-top:-9px;flex:none;transition:opacity .35s ease}
 .rv.on{grid-template-rows:1fr;opacity:1;margin-top:0}
 .rvi{min-height:0;overflow:hidden}
 .fade{opacity:0!important;transition:opacity .3s ease!important}
@@ -532,9 +532,9 @@ mark{background:transparent;transition:background-color .5s ease}mark.on{backgro
   var phone=$('phoneIco'), chead=$('chead'), callst=$('callst'), timer=$('timer');
 
   /* timeline (seconds) */
-  var T={fill:1.8,fillStep:.18, card:[9.0,18.0,27.6], timer:[[0,'00:04'],[5,'00:10'],[12,'01:42'],[24,'02:51'],[35,'03:49'],[38,'03:58']],
+  var T={fill:1.8,fillStep:0, card:[9.6,18.5,28.2], timer:[[0,'00:04'],[5,'00:10'],[12,'01:42'],[24,'02:51'],[35,'03:49'],[38,'03:58']],
          end:38.0, tag:38.6, out:40.0, gone:40.35, sum:40.6, fb:43.5};
-  var BEAT_END={1:4.5,2:11.5,3:24.3,4:34.9,5:53};
+  var BEAT_END={1:4.5,2:11.5,3:24.3,4:35.2,5:53};
 
   var carIdx=-2, lastGone=null;
   function setCar(i){
@@ -548,7 +548,7 @@ mark{background:transparent;transition:background-color .5s ease}mark.on{backgro
     rows.forEach(function(r){
       r.el.classList.toggle('show',t>=r.s);
       r.words.forEach(function(w,i){w.classList.toggle('on',t>=r.s+.15+i*RATE)});
-      r.marks.forEach(function(m){m.el.classList.toggle('on',t>=r.s+.15+m.last*RATE+.2)});
+      r.marks.forEach(function(m){m.el.classList.toggle('on',t>=r.s+.15+r.words.length*RATE+.55)});
     });
     fv.forEach(function(e,i){e.classList.toggle('on',t>=T.fill+i*T.fillStep)});
     var fade=t>=T.out, gone=t>=T.gone;

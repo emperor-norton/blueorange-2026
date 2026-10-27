@@ -121,7 +121,9 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 /* ---------- Home intro ---------- */
 /* Headline and intro share the case studies' centered reading column; the links sit in the left gutter,
    on the same edge as the logo tile and the cards. */
-.home-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, var(--col)) minmax(0, 1fr); column-gap: var(--s-24); row-gap: var(--s-32); }
+/* As the window narrows: the right gutter gives way first (column drifts right, links keep their 120px rail),
+   then the column itself narrows to 520px. Only below 768px does everything stack. */
+.home-grid { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(min(520px, 100%), var(--col)) minmax(0, 1fr); column-gap: var(--s-24); row-gap: var(--s-32); }
 /* The thesis is set as a statement: full width, much larger than anything else on the page. */
 /* Thesis sits in the reading column, set larger than case study headlines. */
 .home-grid h1 { grid-column: 2; font-size: clamp(36px, 4.4vw, 60px); line-height: 1.08; letter-spacing: -0.015em; margin-bottom: var(--s-16); }
@@ -132,7 +134,7 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .arrow-link { display: inline-flex; align-items: center; gap: var(--s-8); font-weight: 500; font-size: 18px; color: var(--blue); text-decoration: none; }
 .arrow-link .ic { width: 20px; height: 20px; background: var(--blue); color: #fff; display: grid; place-items: center; border-radius: 2px; transition: transform 250ms var(--ease); }
 .arrow-link:hover .ic { transform: translateX(3px); }
-@media (max-width: 1120px) {
+@media (max-width: 767px) {
   .home-grid { grid-template-columns: minmax(0, var(--col)); }
   .home-grid h1, .home-grid .prose { grid-column: 1; }
   .home-grid .prose { grid-row: 2; }
