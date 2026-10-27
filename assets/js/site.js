@@ -128,6 +128,8 @@
       live.style.aspectRatio = 'auto';
       live.style.height = Math.ceil(e.data.sasHero) + 'px';
       frameH = e.data.frame;
+      // round the embed's top corners too, for browsers that don't clip the scaled window inside it
+      live.style.borderRadius = (12 * e.data.frame / 760) + 'px ' + (12 * e.data.frame / 760) + 'px 0 0';
       split();
     });
     $$('.case .story .shot img').forEach(function (i) { if (!i.complete) i.addEventListener('load', split); });
