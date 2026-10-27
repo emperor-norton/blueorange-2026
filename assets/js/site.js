@@ -143,7 +143,7 @@
       if (seg) return Array.from(seg.segment(text), function (s) { return s.segment; });
       return text.match(/[^.!?]+[.!?]+[\s ]*|[^.!?]+$/g) || [text];
     };
-    $$('.prose p, .prose li').forEach(function (b) {
+    $$('.prose p, .prose li, .principle p').forEach(function (b) {
       if (b.children.length) return; // leave blocks with markup (bold leads, links) intact
       var text = b.textContent;
       b.textContent = '';
