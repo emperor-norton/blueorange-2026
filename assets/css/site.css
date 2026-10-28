@@ -131,13 +131,20 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .home-grid { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(min(520px, 100%), var(--col)) minmax(0, 1fr); column-gap: var(--s-24); row-gap: var(--s-32); }
 /* The thesis is set as a statement: full width, much larger than anything else on the page. */
 /* Thesis sits in the reading column, set larger than case study headlines. */
-.home-grid h1 { grid-column: 2; font-size: clamp(36px, 4.4vw, 60px); line-height: 1.08; letter-spacing: -0.015em; margin-bottom: var(--s-16); }
+/* Bold comes from scale, not weight: big, light, tightly set. */
+.home-grid h1 { grid-column: 2; font-weight: 400; font-size: clamp(48px, 7vw, 92px); line-height: 1; letter-spacing: -0.02em; margin-bottom: var(--s-16); }
+.home-grid h1 .l { display: block; }
+/* One headline, then one body style (no bold, no italic), so the eye runs straight down.
+   Body scales up with the headline: ~60 characters a line instead of ~80, and more vertical mass. */
+.home-grid .prose { font-size: clamp(19px, 1.9vw, 24px); line-height: 1.5; }
 .home-grid .prose { grid-column: 2; grid-row: 2; }
-.home-grid .links { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: var(--s-12); margin: 0; padding: 0; list-style: none; padding-top: 2px; }
+.home-grid .links { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: var(--s-12); margin: 0; padding: 0; list-style: none; }
+/* The links' first line shares a baseline with the paragraph's first line, whatever size the paragraph scales to. */
+.home-grid .links, .home-grid .prose { align-self: baseline; }
 .home .story { padding-bottom: var(--s-96); }
 .home-cards { padding-block: var(--s-96); }
-.arrow-link { display: inline-flex; align-items: center; gap: var(--s-8); font-weight: 500; font-size: 18px; color: var(--blue); text-decoration: none; }
-.arrow-link .ic { width: 20px; height: 20px; background: var(--blue); color: #fff; display: grid; place-items: center; border-radius: 2px; transition: transform 250ms var(--ease); }
+.arrow-link { display: inline-flex; align-items: baseline; gap: var(--s-8); font-weight: 500; font-size: 18px; color: var(--blue); text-decoration: none; }
+.arrow-link .ic { align-self: center; width: 20px; height: 20px; background: var(--blue); color: #fff; display: grid; place-items: center; border-radius: 2px; transition: transform 250ms var(--ease); }
 .arrow-link:hover .ic { transform: translateX(3px); }
 @media (max-width: 767px) {
   .home-grid { grid-template-columns: minmax(0, var(--col)); }
