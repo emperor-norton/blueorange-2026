@@ -134,8 +134,7 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 /* Bold comes from scale, not weight: big, light, tightly set. */
 .home-grid h1 { grid-column: 2; font-weight: 400; font-size: clamp(48px, 7vw, 92px); line-height: 1; letter-spacing: -0.02em; margin-bottom: var(--s-16); }
 .home-grid h1 .l { display: block; }
-/* The signature line gets its own voice: same family, italic, a size up from body, room above. */
-.home-grid .prose .thesis { margin: var(--s-32) 0 var(--s-12); font-family: var(--display); font-style: italic; font-weight: 400; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.25; color: var(--ink); text-wrap: balance; }
+/* One headline, then one body style (no bold, no italic), so the eye runs straight down. */
 .home-grid .prose { grid-column: 2; grid-row: 2; }
 .home-grid .links { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: var(--s-12); margin: 0; padding: 0; list-style: none; padding-top: 2px; }
 .home .story { padding-bottom: var(--s-96); }
@@ -195,7 +194,7 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .card .obj { position: absolute; top: 0; right: 0; width: 46%; max-width: 210px; aspect-ratio: 1; height: auto; transition: transform 400ms var(--ease); }
 .card:hover .obj, .card:focus-visible .obj { transform: translateY(-8px); }
 .card .txt { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--s-12); }
-.card .co { font-family: var(--sans); font-weight: 600; font-size: 13px; letter-spacing: .01em; }
+.card .co { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
 .card .t { min-height: 2.4em; font-family: var(--display); font-weight: 600; font-size: clamp(20px, 1.9vw, 26px); line-height: 1.2; letter-spacing: -0.005em; max-width: 461px; text-wrap: balance; }
 
 footer { margin-top: var(--s-96); background: var(--footer); }
