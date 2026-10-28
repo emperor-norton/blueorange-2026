@@ -138,11 +138,13 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
    Body scales up with the headline: ~60 characters a line instead of ~80, and more vertical mass. */
 .home-grid .prose { font-size: clamp(19px, 1.9vw, 24px); line-height: 1.5; }
 .home-grid .prose { grid-column: 2; grid-row: 2; }
-.home-grid .links { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: var(--s-12); margin: 0; padding: 0; list-style: none; padding-top: 2px; }
+.home-grid .links { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: var(--s-12); margin: 0; padding: 0; list-style: none; }
+/* The links' first line shares a baseline with the paragraph's first line, whatever size the paragraph scales to. */
+.home-grid .links, .home-grid .prose { align-self: baseline; }
 .home .story { padding-bottom: var(--s-96); }
 .home-cards { padding-block: var(--s-96); }
-.arrow-link { display: inline-flex; align-items: center; gap: var(--s-8); font-weight: 500; font-size: 18px; color: var(--blue); text-decoration: none; }
-.arrow-link .ic { width: 20px; height: 20px; background: var(--blue); color: #fff; display: grid; place-items: center; border-radius: 2px; transition: transform 250ms var(--ease); }
+.arrow-link { display: inline-flex; align-items: baseline; gap: var(--s-8); font-weight: 500; font-size: 18px; color: var(--blue); text-decoration: none; }
+.arrow-link .ic { align-self: center; width: 20px; height: 20px; background: var(--blue); color: #fff; display: grid; place-items: center; border-radius: 2px; transition: transform 250ms var(--ease); }
 .arrow-link:hover .ic { transform: translateX(3px); }
 @media (max-width: 767px) {
   .home-grid { grid-template-columns: minmax(0, var(--col)); }
