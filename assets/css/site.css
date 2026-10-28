@@ -131,8 +131,10 @@ h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(
 .home-grid { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(min(520px, 100%), var(--col)) minmax(0, 1fr); column-gap: var(--s-24); row-gap: var(--s-32); }
 /* The thesis is set as a statement: full width, much larger than anything else on the page. */
 /* Thesis sits in the reading column, set larger than case study headlines. */
-/* Bold comes from scale, not weight: big, light, tightly set. */
-.home-grid h1 { grid-column: 2; font-weight: 400; font-size: clamp(48px, 7vw, 92px); line-height: 1; letter-spacing: -0.03em; margin-bottom: var(--s-16); }
+/* Bold comes from scale, not weight: big, light, tightly set.
+   margin-left is optical alignment: Lora's H and I sit ~0.055em in from the origin, so the headline hangs
+   slightly left to put its outer edge on the same line as the paragraph's. */
+.home-grid h1 { grid-column: 2; font-weight: 400; font-size: clamp(48px, 7vw, 92px); line-height: 1; letter-spacing: -0.03em; margin-bottom: var(--s-16); margin-left: -0.035em; }
 .home-grid h1 .l { display: block; }
 /* One headline, then one body style (no bold, no italic), so the eye runs straight down.
    Body scales up with the headline: ~60 characters a line instead of ~80, and more vertical mass. */
